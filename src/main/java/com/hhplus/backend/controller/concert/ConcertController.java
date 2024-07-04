@@ -4,6 +4,7 @@ import com.hhplus.backend.application.concert.ConcertMockFacade;
 import com.hhplus.backend.controller.concert.dto.PayInput;
 import com.hhplus.backend.controller.concert.dto.ReserveSeatInput;
 import com.hhplus.backend.domain.concert.*;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,11 +56,11 @@ public class ConcertController {
 
     /**
      * 사용자 대기열 토큰 발급 요청
-     * @param userId
+     * @param input
      * @return
      */
     @PostMapping("/token/create")
-    public UserToken createToken(@RequestBody long userId) {
+    public UserToken createToken(@RequestBody Map<String, Long> input) {
         UserToken userToken = concertMockFacade.getTokenMock();
         return userToken;
     }

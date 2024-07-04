@@ -3,6 +3,7 @@ package com.hhplus.backend.controller.point;
 import com.hhplus.backend.application.point.PointMockFacade;
 import com.hhplus.backend.domain.point.PointHistory;
 import com.hhplus.backend.domain.point.UserPoint;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,13 +49,13 @@ public class PointController {
     /**
      * 포인트 충전
      * @param userId
-     * @param amount
+     * @param input
      * @return
      */
     @PatchMapping("/{userId}/charge")
     public UserPoint charge(
             @PathVariable long userId,
-            @RequestBody long amount
+            @RequestBody Map<String, Long> input
     ) {
 
         UserPoint userPoint = pointMockFacade.getUserPoint();
