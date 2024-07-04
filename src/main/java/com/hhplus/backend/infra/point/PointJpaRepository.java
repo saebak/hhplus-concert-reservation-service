@@ -1,4 +1,4 @@
 package com.hhplus.backend.infra.point;
 
-public class PointRepository {
+public class PointJpaRepository {
 }
