@@ -1,5 +1,6 @@
 package com.hhplus.backend.domain.point;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -19,4 +20,7 @@ public class PointHistory {
 
     @Getter
     private String type;
+
+    @Getter
+    private LocalDateTime createAt;
 }

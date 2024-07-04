@@ -1,5 +1,6 @@
 package com.hhplus.backend.domain.concert;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -19,4 +20,10 @@ public class UserToken {
 
     @Getter
     private String status;
+
+    @Getter
+    private LocalDateTime createAt;
+
+    @Getter
+    private LocalDateTime udpateAt;
 }

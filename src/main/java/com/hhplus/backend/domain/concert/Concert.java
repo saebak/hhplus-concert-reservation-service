@@ -13,4 +13,10 @@ public class Concert {
 
     @Getter
     private String title;
+
+    @Getter
+    private String content;
+
+    @Getter
+    private int price;
 }

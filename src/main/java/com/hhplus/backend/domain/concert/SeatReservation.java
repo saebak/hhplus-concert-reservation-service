@@ -1,5 +1,6 @@
 package com.hhplus.backend.domain.concert;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -22,4 +23,10 @@ public class SeatReservation {
 
     @Getter
     private char payYn;
+
+    @Getter
+    private char cancelYn;
+
+    @Getter
+    private LocalDateTime createAt;
 }

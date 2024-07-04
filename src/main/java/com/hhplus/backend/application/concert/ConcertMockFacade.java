@@ -24,8 +24,8 @@ public class ConcertMockFacade {
     // 콘서트 더미 데이터
     private List<Concert> concertsMock() {
         List<Concert> concertList = new ArrayList<>();
-        concertList.add(new Concert(1L, "뮤지컬 데스노트"));
-        concertList.add(new Concert(2L, "한요한 정규3집 단독 콘서트"));
+        concertList.add(new Concert(1L, "뮤지컬 데스노트", "원작 데스노트를 뮤지컬로 만들었어용", 70000));
+        concertList.add(new Concert(2L, "한요한 정규3집 단독 콘서트","한요한 콘서트 가고싶다", 50000));
 
         return concertList;
     }
@@ -51,7 +51,7 @@ public class ConcertMockFacade {
 
     // 유저 대기열 토큰 더미 데이터
     private UserToken getTokenMock(long userId) {
-        UserToken userToken = new UserToken(1L, userId, "accessToken1111111222222", "WAIT");
+        UserToken userToken = new UserToken(1L, userId, "accessToken1111111222222", "WAIT", LocalDateTime.now(), LocalDateTime.now().plusMinutes(5));
 
         return userToken;
     }

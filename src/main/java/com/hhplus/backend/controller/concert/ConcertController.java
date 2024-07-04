@@ -4,6 +4,7 @@ import com.hhplus.backend.application.concert.ConcertMockFacade;
 import com.hhplus.backend.controller.concert.dto.PayInput;
 import com.hhplus.backend.controller.concert.dto.ReserveSeatInput;
 import com.hhplus.backend.domain.concert.*;
+import java.time.LocalDateTime;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -72,7 +73,7 @@ public class ConcertController {
      */
     @PostMapping("/reservation")
     public SeatReservation reserveSeat(@RequestBody ReserveSeatInput input) {
-        SeatReservation reserveResult = new SeatReservation(1L, 1L, 1L, 5L, 'N');
+        SeatReservation reserveResult = new SeatReservation(1L, 1L, 1L, 5L, 'N', 'N', LocalDateTime.now());
         return reserveResult;
     }
 

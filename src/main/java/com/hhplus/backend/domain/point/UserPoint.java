@@ -12,5 +12,8 @@ public class UserPoint {
     private Long id;
 
     @Getter
+    private Long userId;
+
+    @Getter
     private int point;
 }
