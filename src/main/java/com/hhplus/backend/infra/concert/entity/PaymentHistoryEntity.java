@@ -1,4 +1,4 @@
-package com.hhplus.backend.infra.point.entity;
+package com.hhplus.backend.infra.concert.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name="USER_POINT")
-public class UserPointEntity {
+@Table(name="PAYMENT_HISTORY")
+public class PaymentHistoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,8 +20,23 @@ public class UserPointEntity {
     @Column(name="USER_ID")
     private Long userId;
 
-    @Column(name="POINT")
-    private int point;
+    @Column(name="CONCERT_ID")
+    private Long concertId;
+
+    @Column(name="CONCERT_TITLE")
+    private String concertTitle;
+
+    @Column(name="SCHEDULE_ID")
+    private Long scheduleId;
+
+    @Column(name="SEAT_ID")
+    private Long seatId;
+
+    @Column(name="PRICE")
+    private int price;
+
+    @Column(name="STATUS")
+    private String status;
 
     @CreatedDate
     @Column(name="CREATED_AT")
@@ -30,5 +45,4 @@ public class UserPointEntity {
     @LastModifiedDate
     @Column(name="UPDATED_AT")
     private LocalDateTime updatedAt;
-
 }

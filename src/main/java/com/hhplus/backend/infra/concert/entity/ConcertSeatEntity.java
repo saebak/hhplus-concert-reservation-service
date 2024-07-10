@@ -1,4 +1,4 @@
-package com.hhplus.backend.infra.user.entity;
+package com.hhplus.backend.infra.concert.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,21 +8,21 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name="USER")
-public class UserEntity {
+@Table(name="CONCERT_SEAT")
+public class ConcertSeatEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ID")
     private Long id;
 
-    @Column(name="NAME")
-    private String name;
+    @Column(name="SCHEDULE_ID")
+    private Long scheduleId;
 
-    // 사용자 정보 ~
+    @Column(name="SEAT_NO")
+    private int seatNo;
 
     @CreatedDate
-    @Column(name="CREATE_AT")
+    @Column(name="CREATED_AT")
     private LocalDateTime createdAt;
-
 }

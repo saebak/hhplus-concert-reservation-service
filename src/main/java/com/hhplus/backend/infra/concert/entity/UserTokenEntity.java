@@ -1,4 +1,4 @@
-package com.hhplus.backend.infra.point.entity;
+package com.hhplus.backend.infra.concert.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name="USER_POINT")
-public class UserPointEntity {
+@Table(name="USER_TOKEN")
+public class UserTokenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,8 +20,11 @@ public class UserPointEntity {
     @Column(name="USER_ID")
     private Long userId;
 
-    @Column(name="POINT")
-    private int point;
+    @Column(name="ACCESS_TOKEN")
+    private String accessToken;
+
+    @Column(name="STATUS")
+    private String status;
 
     @CreatedDate
     @Column(name="CREATED_AT")
@@ -30,5 +33,4 @@ public class UserPointEntity {
     @LastModifiedDate
     @Column(name="UPDATED_AT")
     private LocalDateTime updatedAt;
-
 }
