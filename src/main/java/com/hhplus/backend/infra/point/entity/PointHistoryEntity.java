@@ -3,14 +3,13 @@ package com.hhplus.backend.infra.point.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name="USER_POINT")
-public class UserPointEntity {
+@Table(name="POINT_HISTORY")
+public class PointHistoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,12 +22,11 @@ public class UserPointEntity {
     @Column(name="POINT")
     private int point;
 
+    @Column(name="STATUS")
+    private String status;
+
     @CreatedDate
     @Column(name="CREATED_AT")
     private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name="UPDATED_AT")
-    private LocalDateTime updatedAt;
 
 }
