@@ -1,10 +1,8 @@
 package com.hhplus.backend.controller.concert;
 
 import com.hhplus.backend.application.concert.ConcertMockFacade;
-import com.hhplus.backend.controller.concert.dto.PayInput;
 import com.hhplus.backend.controller.concert.dto.ReserveSeatInput;
 import com.hhplus.backend.domain.concert.*;
-import com.hhplus.backend.domain.payment.PaymentHistory;
 import com.hhplus.backend.domain.token.UserToken;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -73,19 +71,8 @@ public class ConcertController {
      */
     @PostMapping("/reservation")
     public SeatReservation reserveSeat(@RequestBody ReserveSeatInput input) {
-        SeatReservation reserveResult = new SeatReservation(1L, 1L, 1L, 5L, 'N', 'N', LocalDateTime.now());
+        SeatReservation reserveResult = new SeatReservation(1L, 1L, 1L, 5L, 1L, "WAIT", LocalDateTime.now());
         return reserveResult;
-    }
-
-    /**
-     * 결제 요청
-     * @param input
-     * @return
-     */
-    @PostMapping("/pay")
-    public PaymentHistory payPoint(@RequestBody PayInput input) {
-        PaymentHistory payResult = new PaymentHistory(1L, 1L, 1L, 5L, 80000, "COMPLETED");
-        return payResult;
     }
 
 

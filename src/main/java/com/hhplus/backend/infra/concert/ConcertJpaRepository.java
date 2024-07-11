@@ -1,5 +1,8 @@
 package com.hhplus.backend.infra.concert;
 
-public class ConcertJpaRepository {
+import com.hhplus.backend.infra.concert.entity.ConcertEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ConcertJpaRepository extends JpaRepository<ConcertEntity, Long> {
 
 }
