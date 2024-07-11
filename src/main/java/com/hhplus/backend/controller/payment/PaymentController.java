@@ -19,7 +19,7 @@ public class PaymentController {
      */
     @PostMapping("/pay")
     public Payment payPoint(@RequestBody PayInput input) {
-        Payment payResult = new Payment(1L, 1L, 1L, 5L, 80000, "COMPLETED");
+        Payment payResult = new Payment(1L, 1L, 1L, "데스노트", 1L, 10L, 50000, "COMPLETED");
         return payResult;
     }
 }
