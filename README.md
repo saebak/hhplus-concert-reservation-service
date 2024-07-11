@@ -1,7 +1,7 @@
 # 콘서트 좌석 예약 서비스
 ### API 명세
 #### Swagger
-**![img.png](img.png)**
+**![image](https://github.com/saebak/hhplus-concert-reservation-service/assets/45276842/9a2675d0-fe92-46c1-9278-df729ca051a7)**
 
 #### Postman
 [콘서트 좌석 예약 서비스 API 명세](https://documenter.getpostman.com/view/10735453/2sA3dxFCGb)
