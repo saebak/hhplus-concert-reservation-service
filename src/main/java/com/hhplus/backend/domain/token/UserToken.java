@@ -2,10 +2,12 @@ package com.hhplus.backend.domain.token;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
 @Data
+@Builder
 @AllArgsConstructor
 public class UserToken {
 
