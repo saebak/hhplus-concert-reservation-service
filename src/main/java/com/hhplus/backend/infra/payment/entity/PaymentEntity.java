@@ -1,4 +1,4 @@
-package com.hhplus.backend.infra.concert.entity;
+package com.hhplus.backend.infra.payment.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name="PAYMENT_HISTORY")
-public class PaymentHistoryEntity {
+@Table(name="PAYMENT")
+public class PaymentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
