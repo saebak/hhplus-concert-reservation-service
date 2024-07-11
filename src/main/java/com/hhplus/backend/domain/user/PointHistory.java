@@ -1,4 +1,4 @@
-package com.hhplus.backend.domain.concert;
+package com.hhplus.backend.domain.user;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Data
 @AllArgsConstructor
-public class PaymentHistory {
+public class PointHistory {
 
     @Getter
     private Long id;
@@ -16,14 +16,11 @@ public class PaymentHistory {
     private Long userId;
 
     @Getter
-    private Long concertId;
+    private int amount;
 
     @Getter
-    private Long seatId;
+    private String type;
 
     @Getter
-    private int price;
-
-    @Getter
-    private String status;
+    private LocalDateTime createAt;
 }

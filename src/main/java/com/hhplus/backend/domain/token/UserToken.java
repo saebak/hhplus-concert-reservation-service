@@ -1,4 +1,4 @@
-package com.hhplus.backend.domain.point;
+package com.hhplus.backend.domain.token;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Data
 @AllArgsConstructor
-public class PointHistory {
+public class UserToken {
 
     @Getter
     private Long id;
@@ -16,11 +16,14 @@ public class PointHistory {
     private Long userId;
 
     @Getter
-    private int amount;
+    private String accessToken;
 
     @Getter
-    private String type;
+    private String status;
 
     @Getter
     private LocalDateTime createAt;
+
+    @Getter
+    private LocalDateTime udpateAt;
 }

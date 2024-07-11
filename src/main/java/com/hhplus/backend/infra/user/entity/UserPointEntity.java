@@ -1,4 +1,4 @@
-package com.hhplus.backend.infra.point.entity;
+package com.hhplus.backend.infra.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

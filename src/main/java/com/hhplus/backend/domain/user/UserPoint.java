@@ -1,4 +1,4 @@
-package com.hhplus.backend.domain.point;
+package com.hhplus.backend.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

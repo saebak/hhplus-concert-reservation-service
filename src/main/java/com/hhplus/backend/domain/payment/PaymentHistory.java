@@ -1,4 +1,4 @@
-package com.hhplus.backend.domain.concert;
+package com.hhplus.backend.domain.payment;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Data
 @AllArgsConstructor
-public class UserToken {
+public class PaymentHistory {
 
     @Getter
     private Long id;
@@ -16,14 +16,14 @@ public class UserToken {
     private Long userId;
 
     @Getter
-    private String accessToken;
+    private Long concertId;
+
+    @Getter
+    private Long seatId;
+
+    @Getter
+    private int price;
 
     @Getter
     private String status;
-
-    @Getter
-    private LocalDateTime createAt;
-
-    @Getter
-    private LocalDateTime udpateAt;
 }

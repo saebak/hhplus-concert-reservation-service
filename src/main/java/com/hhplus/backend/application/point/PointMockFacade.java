@@ -1,11 +1,7 @@
 package com.hhplus.backend.application.point;
 
-
-import com.hhplus.backend.domain.concert.Concert;
-import com.hhplus.backend.domain.concert.ConcertSchedule;
-import com.hhplus.backend.domain.concert.ConcertSeat;
-import com.hhplus.backend.domain.point.PointHistory;
-import com.hhplus.backend.domain.point.UserPoint;
+import com.hhplus.backend.domain.user.PointHistory;
+import com.hhplus.backend.domain.user.UserPoint;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
