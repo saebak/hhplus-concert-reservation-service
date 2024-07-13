@@ -1,4 +1,8 @@
 package com.hhplus.backend.infra.user;
 
-public class UserJpaRepository {
+import com.hhplus.backend.infra.user.entity.UserEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
+
 }
