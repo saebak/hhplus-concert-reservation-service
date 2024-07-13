@@ -1,7 +1,7 @@
 package com.hhplus.backend.controller.token;
 
 import com.hhplus.backend.application.concert.ConcertMockFacade;
-import com.hhplus.backend.domain.token.UserToken;
+import com.hhplus.backend.domain.queue.UserToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -22,4 +22,8 @@ public class ConcertSchedule {
     private LocalDateTime openDate;
 
 
+    public void checkReservationCondition() {
+        LocalDateTime now = LocalDateTime.now();
+
+    }
 }

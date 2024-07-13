@@ -1,9 +1,10 @@
 package com.hhplus.backend.controller.concert;
 
 import com.hhplus.backend.application.concert.ConcertMockFacade;
-import com.hhplus.backend.controller.concert.dto.ReserveSeatInput;
+import com.hhplus.backend.controller.concert.dto.ConcertDto;
+import com.hhplus.backend.controller.concert.dto.ConcertReserveSeatDto;
 import com.hhplus.backend.domain.concert.*;
-import com.hhplus.backend.domain.token.UserToken;
+import com.hhplus.backend.domain.queue.UserToken;
 import java.time.LocalDateTime;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +71,7 @@ public class ConcertController {
      * @return
      */
     @PostMapping("/reservation")
-    public SeatReservation reserveSeat(@RequestBody ReserveSeatInput input) {
+    public ConcertReserveSeatDto.Response reserveSeat(@RequestBody ConcertReserveSeatDto.Request requset) {
         SeatReservation reserveResult = new SeatReservation(1L, 1L, 1L, 5L, 1L, "WAIT", LocalDateTime.now());
         return reserveResult;
     }

@@ -4,7 +4,7 @@ package com.hhplus.backend.application.concert;
 import com.hhplus.backend.domain.concert.Concert;
 import com.hhplus.backend.domain.concert.ConcertSchedule;
 import com.hhplus.backend.domain.concert.ConcertSeat;
-import com.hhplus.backend.domain.token.UserToken;
+import com.hhplus.backend.domain.queue.UserToken;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 

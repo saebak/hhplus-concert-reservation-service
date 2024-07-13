@@ -24,11 +24,18 @@ public class SeatReservation {
     private Long scheduleId;
 
     @Getter
-    private Long seatId;
+    private ConcertSeat seat;
 
     @Getter
     private String status;
 
     @Getter
     private LocalDateTime createAt;
+
+    public void checkReserved(LocalDateTime now) {
+        this.createAt > now.plusMinutes(5)
+        if (reservedSeat != null) {
+            throw new Exception("이미 예약된 좌석입니다.");
+        }
+    }
 }

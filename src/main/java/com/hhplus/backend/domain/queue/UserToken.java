@@ -1,4 +1,4 @@
-package com.hhplus.backend.domain.token;
+package com.hhplus.backend.domain.queue;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
