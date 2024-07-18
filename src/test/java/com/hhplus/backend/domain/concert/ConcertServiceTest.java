@@ -1,5 +1,6 @@
 package com.hhplus.backend.domain.concert;
 
+import com.hhplus.backend.domain.exception.AlreadyReservedSeatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -120,7 +121,7 @@ public class ConcertServiceTest {
 
         // when
         // then
-        assertThatExceptionOfType(Exception.class)
+        assertThatExceptionOfType(AlreadyReservedSeatException.class)
                 .isThrownBy(()->{
                     concertService.reserveSeat(command);
                 }).withMessage("이미 예약된 좌석입니다.");

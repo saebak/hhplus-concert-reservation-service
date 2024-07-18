@@ -1,6 +1,8 @@
 package com.hhplus.backend.domain.concert;
 
 import java.time.LocalDateTime;
+
+import com.hhplus.backend.domain.exception.AlreadyReservedSeatException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,8 +46,8 @@ public class SeatReservation {
 
     public void checkReserved(LocalDateTime now) throws Exception {
         // 예약 요청한지 5분 지난 좌석은 예약 가능
-        if (this.createAt.isBefore(now.plusMinutes(5))) throw new Exception("이미 예약된 좌석입니다.");
-        if (this.id != null) throw new Exception("이미 예약된 좌석입니다.");
+        if (this.createAt.isBefore(now.plusMinutes(5))) throw new AlreadyReservedSeatException("이미 예약된 좌석입니다.");
+        if (this.id != null) throw new AlreadyReservedSeatException("이미 예약된 좌석입니다.");
     }
 
     public void checkPayment(Long userId, LocalDateTime now) throws Exception {

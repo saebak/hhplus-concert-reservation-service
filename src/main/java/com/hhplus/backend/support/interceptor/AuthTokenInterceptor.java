@@ -1,5 +1,6 @@
 package com.hhplus.backend.support.interceptor;
 
+import com.hhplus.backend.domain.exception.NotActivateTokenException;
 import com.hhplus.backend.domain.queue.QueueService;
 import com.hhplus.backend.domain.queue.UserToken;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,9 +22,8 @@ public class AuthTokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.debug("===============================================");
-        log.debug("==================== BEGIN ====================");
-        log.debug("Request URI ===> " + request.getRequestURI());
+//        log.debug("==================== BEGIN ====================");
+//        log.debug("Request URI ===> " + request.getRequestURI());
 
         // 포인트관련 api는 검증 제외
         String reqUrl = request.getRequestURI();
@@ -35,6 +35,8 @@ public class AuthTokenInterceptor implements HandlerInterceptor {
         UserToken userToken = queueService.getToken(userId);
 
         if (!userToken.isActive()) {
+            NotActivateTokenException e = new NotActivateTokenException("Not activate token");
+            log.info(e.getMessage());
             return false;
         };
 
@@ -43,8 +45,7 @@ public class AuthTokenInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.debug("==================== END ======================");
-        log.debug("===============================================");
+        //log.debug("==================== END ======================");
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
 }

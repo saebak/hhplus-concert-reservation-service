@@ -1,5 +1,6 @@
 package com.hhplus.backend.domain.user;
 
+import com.hhplus.backend.domain.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class UserService {
     public UserPoint getUserPoint(long userId) {
         User user = userRepository.getUser(userId);
         if (user == null) {
-            throw new NullPointerException("사용자가 존재하지 않습니다.");
+            throw new NotFoundException("사용자가 존재하지 않습니다.");
         }
         UserPoint userPoint = userRepository.getUserPoint(userId);
         return userPoint;
@@ -29,7 +30,7 @@ public class UserService {
     public UserPoint chargePoint(long userId, int amount) throws Exception {
         User user = userRepository.getUser(userId);
         if (user == null) {
-            throw new NullPointerException("사용자가 존재하지 않습니다.");
+            throw new NotFoundException("사용자가 존재하지 않습니다.");
         }
         UserPoint userPoint = getUserPoint(userId);
         userPoint.plusPoint(amount);
@@ -42,7 +43,7 @@ public class UserService {
     public UserPoint usePoint(long userId, int usePoint) throws Exception {
         User user = userRepository.getUser(userId);
         if (user == null) {
-            throw new NullPointerException("사용자가 존재하지 않습니다.");
+            throw new NotFoundException("사용자가 존재하지 않습니다.");
         }
         UserPoint userPoint = getUserPoint(userId);
         userPoint.minusPoint(usePoint);

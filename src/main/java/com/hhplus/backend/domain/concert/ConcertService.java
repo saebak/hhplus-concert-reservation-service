@@ -2,6 +2,7 @@ package com.hhplus.backend.domain.concert;
 
 import java.time.LocalDateTime;
 
+import com.hhplus.backend.domain.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class ConcertService {
         concertSchedule.checkReservationCondition();    // 콘서트 스케쥴 검증
 
         ConcertSeat seat = concertRepository.findConcertSeat(command.concertId, command.scheduleId, command.seatId);
-        if(seat == null) throw new RuntimeException("없는 좌석입니다.");   // 존재하는 좌석인지 검증
+        if(seat == null) throw new NotFoundException("없는 좌석입니다.");   // 존재하는 좌석인지 검증
 
         // 다른 사람예약이 점유중인지 확인해야함.
         SeatReservation seatReservation = concertRepository.findValidSeatReservation(command.concertId, command.scheduleId, command.seatId, now);

@@ -1,5 +1,7 @@
 package com.hhplus.backend.domain.user;
 
+import com.hhplus.backend.domain.exception.NotEnoughPointException;
+import com.hhplus.backend.domain.exception.NotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -65,7 +67,7 @@ public class UserServiceTest {
 
         // when
         // then
-        assertThatExceptionOfType(NullPointerException.class)
+        assertThatExceptionOfType(NotFoundException.class)
                 .isThrownBy(()->{
                     userService.getUserPoint(userId);
                 }).withMessage("사용자가 존재하지 않습니다.");
@@ -126,7 +128,7 @@ public class UserServiceTest {
 
         // when
         // given
-        assertThatExceptionOfType(BadRequestException.class)
+        assertThatExceptionOfType(NotEnoughPointException.class)
                 .isThrownBy(()->{
                     userService.usePoint(userId, usePoint);
                 }).withMessage("포인트가 부족합니다.");
