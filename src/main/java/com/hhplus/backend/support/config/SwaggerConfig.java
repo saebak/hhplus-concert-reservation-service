@@ -1,4 +1,4 @@
-package com.hhplus.backend.config;
+package com.hhplus.backend.support.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
