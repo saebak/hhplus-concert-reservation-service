@@ -1,16 +1,20 @@
 package com.hhplus.backend.infra.concert;
 
-import com.hhplus.backend.controller.concert.dto.ConcertInput;
-import com.hhplus.backend.controller.concert.dto.ReserveSeatInput;
-import com.hhplus.backend.domain.concert.ConcertRepository;
-import com.hhplus.backend.domain.concert.ConcertSchedule;
-import com.hhplus.backend.domain.concert.ConcertSeat;
-import com.hhplus.backend.domain.concert.SeatReservation;
-import com.hhplus.backend.infra.user.UserJpaRepository;
-import com.hhplus.backend.infra.user.UserPointJpaRepository;
+import com.hhplus.backend.controller.concert.mapper.ConcertMapper;
+import com.hhplus.backend.controller.concert.mapper.ConcertScheduleMapper;
+import com.hhplus.backend.controller.concert.mapper.ConcertSeatMapper;
+import com.hhplus.backend.controller.concert.mapper.SeatReservationMapper;
+import com.hhplus.backend.domain.concert.*;
+import com.hhplus.backend.infra.concert.entity.ConcertEntity;
+import com.hhplus.backend.infra.concert.entity.ConcertScheduleEntity;
+import com.hhplus.backend.infra.concert.entity.ConcertSeatEntity;
+import com.hhplus.backend.infra.concert.entity.SeatReservationEntity;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ConcertRepositoryImpl implements ConcertRepository {
@@ -31,18 +35,60 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     }
 
     @Override
-    public List<ConcertSchedule> getConcertSchedules(ConcertInput input) {
-        //concertScheduleJpaRepository.findAllById()
-        return List.of();
+    public List<Concert> findAll() {
+        List<ConcertEntity> concertEntities = concertJpaRepository.findAll();
+        List<Concert> concerts = new ArrayList<>();
+        for(ConcertEntity concertEntity : concertEntities) {
+            concerts.add(ConcertMapper.toDomain(concertEntity));
+        }
+        return concerts;
     }
 
     @Override
-    public List<ConcertSeat> getConcertSeats(ConcertInput input) {
-        return List.of();
+    public List<ConcertSchedule> getConcertSchedules(Long concertId) {
+        List<ConcertScheduleEntity> concertScheduleEntities = concertScheduleJpaRepository.findAllByConcertId(concertId);
+        List<ConcertSchedule> concertSchedules = new ArrayList<>();
+        for(ConcertScheduleEntity concertScheduleEntity : concertScheduleEntities) {
+            concertSchedules.add(ConcertScheduleMapper.toDomain(concertScheduleEntity));
+        }
+        return concertSchedules;
     }
 
     @Override
-    public SeatReservation reqeustReserveSeat(ReserveSeatInput input) {
-        return null;
+    public List<ConcertSeat> getConcertSeats(Long scheduleId) {
+        List<ConcertSeatEntity> concertSeatEntities = concertSeatJpaRepository.findAllByScheduleId(scheduleId);
+        List<ConcertSeat> concertSeats = new ArrayList<>();
+        for(ConcertSeatEntity concertSeatEntity : concertSeatEntities) {
+            concertSeats.add(ConcertSeatMapper.toDomain(concertSeatEntity));
+        }
+        return concertSeats;
+    }
+
+    @Override
+    public ConcertSchedule findConcertScheduleById(Long scheduleId) {
+        Optional<ConcertScheduleEntity> concertScheduleEntity = concertScheduleJpaRepository.findById(scheduleId);
+        ConcertSchedule concertSchedule = ConcertScheduleMapper.toDomain(concertScheduleEntity.get());
+        return concertSchedule;
+    }
+
+    @Override
+    public ConcertSeat findConcertSeat(Long concertId, Long scheduleId, Long seatId) {
+        ConcertSeatEntity concertSeatEntity = concertSeatJpaRepository.findByIdAndConcertIdAndScheduleId(seatId, concertId, scheduleId);
+        ConcertSeat concertSeat = ConcertSeatMapper.toDomain(concertSeatEntity);
+        return concertSeat;
+    }
+
+    @Override
+    public SeatReservation findValidSeatReservation(Long concertId, Long scheduleId, Long seatId, LocalDateTime now) {
+        SeatReservationEntity seatReservationEntity = seatReservationJpaRepository.findByConcertIdAndScheduleIdAndSeatIdAndCreatedAtLessThan(concertId,scheduleId,seatId,now);
+        SeatReservation seatReservation = SeatReservationMapper.toDomain(seatReservationEntity);
+        return seatReservation;
+    }
+
+    @Override
+    public SeatReservation saveSeatReservation(SeatReservation seatReservation) {
+        SeatReservationEntity seatReservationEntity = seatReservationJpaRepository.save(SeatReservationMapper.toEntity(seatReservation));
+        SeatReservation result = SeatReservationMapper.toDomain(seatReservationEntity);
+        return result;
     }
 }
