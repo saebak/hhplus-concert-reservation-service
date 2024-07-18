@@ -37,10 +37,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserPoint changePoint(UserPoint param) {
-        UserPointEntity entity = UserPointMapper.toEntity(param);
-        UserPointEntity userPoint = userPointJpaRepository.save(entity);
-        UserPoint result = UserPointMapper.toDomain(userPoint);
+    public UserPoint updateUserPoint(UserPoint userPoint) {
+        UserPointEntity entity = UserPointMapper.toEntity(userPoint);
+        UserPointEntity resultPoint = userPointJpaRepository.save(entity);
+        UserPoint result = UserPointMapper.toDomain(resultPoint);
         return result;
     }
 }
