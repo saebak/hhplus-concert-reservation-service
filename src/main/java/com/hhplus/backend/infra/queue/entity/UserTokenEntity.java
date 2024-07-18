@@ -1,4 +1,4 @@
-package com.hhplus.backend.infra.token.entity;
+package com.hhplus.backend.infra.queue.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
