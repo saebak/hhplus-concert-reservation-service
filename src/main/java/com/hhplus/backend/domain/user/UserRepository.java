@@ -9,5 +9,5 @@ public interface UserRepository {
     UserPoint getUserPoint(long userId);
 
     // 포인트 충전/사용
-    UserPoint changePoint(UserPoint param);
+    UserPoint updateUserPoint(UserPoint userPoint);
 }

@@ -9,10 +9,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserService (UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-    
     // 사용자 조회
     public User getUser(long userId) {
         User user = userRepository.getUser(userId);
@@ -21,38 +17,38 @@ public class UserService {
 
     // 포인트 조회
     public UserPoint getUserPoint(long userId) {
-        User user = getUser(userId);
+        User user = userRepository.getUser(userId);
         if (user == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("사용자가 존재하지 않습니다.");
         }
         UserPoint userPoint = userRepository.getUserPoint(userId);
         return userPoint;
     }
 
-    // 포인트 충전/사용
-    public UserPoint change(UserPoint param, String changeType) throws Exception {
-        User user = getUser(param.getUserId());
+    // 포인트 충전
+    public UserPoint chargePoint(long userId, int amount) throws Exception {
+        User user = userRepository.getUser(userId);
         if (user == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("사용자가 존재하지 않습니다.");
         }
-        UserPoint userPoint = getUserPoint(param.getUserId());
-        
-        // 충전
-        if ("charge".equals(changeType)) {
-            userPoint.setPoint(userPoint.plusPoint(param.getPoint()));
-        }
+        UserPoint userPoint = getUserPoint(userId);
+        userPoint.plusPoint(amount);
 
-        // 사용
-        if ("use".equals(changeType)) {
-//            if ((userPoint.getPoint() - param.getPoint()) < 0) {
-//                throw new Exception("포인트가 부족합니다.");
-//            }
-//            userPoint.setPoint(userPoint.getPoint()-param.getPoint());
-            userPoint.setPoint(userPoint.minusPoint(param.getPoint()));
-        }
+        UserPoint resultPoint = userRepository.updateUserPoint(userPoint);
+        return resultPoint;
+    }
 
-        UserPoint result = userRepository.changePoint(userPoint);
-        return result;
+    // 포인트 사용
+    public UserPoint usePoint(long userId, int usePoint) throws Exception {
+        User user = userRepository.getUser(userId);
+        if (user == null) {
+            throw new NullPointerException("사용자가 존재하지 않습니다.");
+        }
+        UserPoint userPoint = getUserPoint(userId);
+        userPoint.minusPoint(usePoint);
+
+        UserPoint resultPoint = userRepository.updateUserPoint(userPoint);
+        return resultPoint;
     }
 
 }

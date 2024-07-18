@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserPointJpaRepository extends JpaRepository<UserPointEntity, Long> {
     
     // 사용자 포인트 조회
-    public UserPointEntity findByUserId(long userId);
+    UserPointEntity findByUserId(long userId);
 
 }
