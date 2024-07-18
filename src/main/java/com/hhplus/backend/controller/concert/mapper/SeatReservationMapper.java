@@ -17,7 +17,6 @@ public class SeatReservationMapper {
                 .concertId(entity.getConcertId())
                 .scheduleId(entity.getScheduleId())
                 .seatId(entity.getSeatId())
-                .status(entity.getStatus())
                 .createAt(entity.getCreatedAt())
                 .build();
     }
@@ -35,7 +34,6 @@ public class SeatReservationMapper {
         entity.setConcertId(domain.getConcertId());
         entity.setScheduleId(domain.getScheduleId());
         entity.setSeatId(domain.getSeatId());
-        entity.setStatus(domain.getStatus());
         entity.setCreatedAt(domain.getCreateAt());
         return entity;
     }

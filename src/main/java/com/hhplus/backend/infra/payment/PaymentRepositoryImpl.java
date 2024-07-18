@@ -1,20 +1,14 @@
 package com.hhplus.backend.infra.payment;
 
-import com.hhplus.backend.controller.payment.dto.PayInput;
-import com.hhplus.backend.controller.user.mapper.UserMapper;
-import com.hhplus.backend.controller.user.mapper.UserPointMapper;
+import com.hhplus.backend.controller.payment.dto.PaymentDto;
+import com.hhplus.backend.controller.payment.mapper.PaymentMapper;
 import com.hhplus.backend.domain.payment.Payment;
 import com.hhplus.backend.domain.payment.PaymentRepository;
-import com.hhplus.backend.domain.user.User;
-import com.hhplus.backend.domain.user.UserPoint;
-import com.hhplus.backend.domain.user.UserRepository;
-import com.hhplus.backend.infra.user.UserJpaRepository;
-import com.hhplus.backend.infra.user.UserPointJpaRepository;
-import com.hhplus.backend.infra.user.entity.UserEntity;
-import com.hhplus.backend.infra.user.entity.UserPointEntity;
+import com.hhplus.backend.infra.payment.entity.PaymentEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class PaymentRepositoryImpl implements PaymentRepository {
@@ -26,7 +20,20 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     }
 
     @Override
-    public Payment pay(PayInput input) {
-        return null;
+    public Payment savePayment(Payment info) {
+        PaymentEntity entity = PaymentMapper.toEntity(info);
+        entity = paymentJpaRepository.save(entity);
+        Payment payment = PaymentMapper.toDomain(entity);
+        return payment;
+    }
+
+    @Override
+    public List<Payment> getPayments(long userId) {
+        List<PaymentEntity> paymentEntities = paymentJpaRepository.findAllById(userId);
+        List<Payment> payments = new ArrayList<>();
+        for(PaymentEntity paymentEntity : paymentEntities) {
+            payments.add(PaymentMapper.toDomain(paymentEntity));
+        }
+        return payments;
     }
 }

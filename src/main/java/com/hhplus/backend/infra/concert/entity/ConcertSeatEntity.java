@@ -16,6 +16,9 @@ public class ConcertSeatEntity {
     @Column(name="ID")
     private Long id;
 
+    @Column(name="CONCERT_ID")
+    private Long concertId;
+
     @Column(name="SCHEDULE_ID")
     private Long scheduleId;
 

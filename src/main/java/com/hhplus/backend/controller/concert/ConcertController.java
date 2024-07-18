@@ -1,14 +1,12 @@
 package com.hhplus.backend.controller.concert;
 
-import com.hhplus.backend.application.concert.ConcertMockFacade;
-import com.hhplus.backend.controller.concert.dto.ReserveSeatInput;
+import com.hhplus.backend.controller.concert.dto.ConcertReserveSeatDto;
 import com.hhplus.backend.domain.concert.*;
-import com.hhplus.backend.domain.token.UserToken;
-import java.time.LocalDateTime;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -19,16 +17,17 @@ public class ConcertController {
 
     private static final Logger log = LoggerFactory.getLogger(ConcertController.class);
 
-    private final ConcertMockFacade concertMockFacade;
+    @Autowired
+    private ConcertService concertService;
 
     /**
      * 콘서트 리스트 조회
      * @return
      */
     @GetMapping("/list")
-    public List<Concert> getConcerts() {
-        List<Concert> concerts = concertMockFacade.getConcerts();
-        return concerts;
+    public ResponseEntity<List<Concert>> getConcerts() {
+        List<Concert> concerts = concertService.getConcerts();
+        return ResponseEntity.ok().body(concerts);
     }
 
     /**
@@ -37,9 +36,12 @@ public class ConcertController {
      * @return
      */
     @GetMapping("/{concertId}/schedule")
-    public List<ConcertSchedule> getSchedules(@PathVariable Long concertId) {
-        List<ConcertSchedule> schedules = concertMockFacade.getSchedules();
-        return schedules;
+    public ResponseEntity<List<ConcertSchedule>> getSchedules(@PathVariable Long concertId) {
+        ConcertCommand.GetConcertSchedules command = new ConcertCommand.GetConcertSchedules();
+        command.concertId = concertId;
+
+        List<ConcertSchedule> schedules = concertService.getConcertSchedules(command);
+        return ResponseEntity.ok().body(schedules);
     }
 
     /**
@@ -48,31 +50,29 @@ public class ConcertController {
      * @return
      */
     @GetMapping("/{scheduleId}/seat")
-    public List<ConcertSeat> getSeats(@PathVariable Long scheduleId) {
-        List<ConcertSeat> seats = concertMockFacade.getSeats();
-        return seats;
-    }
+    public ResponseEntity<List<ConcertSeat>> getSeats(@PathVariable Long scheduleId) {
+        ConcertCommand.GetConcertSeats command = new ConcertCommand.GetConcertSeats();
+        command.scheduleId = scheduleId;
 
-    /**
-     * 사용자 대기열 토큰 발급 요청
-     * @param input
-     * @return
-     */
-    @PostMapping("/token/create")
-    public UserToken createToken(@RequestBody Map<String, Long> input) {
-        UserToken userToken = concertMockFacade.getTokenMock();
-        return userToken;
+        List<ConcertSeat> seats = concertService.getConcertSeats(command);
+        return ResponseEntity.ok().body(seats);
     }
 
     /**
      * 좌석 예약 요청
-     * @param input
+     * @param request
      * @return
      */
     @PostMapping("/reservation")
-    public SeatReservation reserveSeat(@RequestBody ReserveSeatInput input) {
-        SeatReservation reserveResult = new SeatReservation(1L, 1L, 1L, 5L, 1L, "WAIT", LocalDateTime.now());
-        return reserveResult;
+    public ResponseEntity<SeatReservation> reserveSeat(@RequestBody ConcertReserveSeatDto.Request request) throws Exception {
+        ConcertCommand.GetSeatReservation command = new ConcertCommand.GetSeatReservation();
+        command.concertId = request.getConcertId();
+        command.scheduleId = request.getScheduleId();
+        command.seatId = request.getSeatId();
+        command.userId = request.getUserId();
+        SeatReservation seatReservation = concertService.reserveSeat(command);
+
+        return ResponseEntity.ok().body(seatReservation);
     }
 
 
