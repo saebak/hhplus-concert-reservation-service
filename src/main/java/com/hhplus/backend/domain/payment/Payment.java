@@ -1,14 +1,14 @@
 package com.hhplus.backend.domain.payment;
 
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+
+import com.hhplus.backend.domain.concert.SeatReservation;
+import lombok.*;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
 
     @Getter
@@ -34,4 +34,7 @@ public class Payment {
 
     @Getter
     private String status;
+
+    @Getter
+    private SeatReservation seatReservation;
 }
