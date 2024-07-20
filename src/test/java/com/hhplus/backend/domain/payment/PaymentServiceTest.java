@@ -4,9 +4,6 @@ import com.hhplus.backend.domain.concert.ConcertRepository;
 import com.hhplus.backend.domain.concert.ConcertSchedule;
 import com.hhplus.backend.domain.concert.ConcertSeat;
 import com.hhplus.backend.domain.concert.SeatReservation;
-import com.hhplus.backend.domain.queue.QueueRepository;
-import com.hhplus.backend.domain.queue.QueueService;
-import com.hhplus.backend.domain.queue.UserToken;
 import com.hhplus.backend.domain.user.UserPoint;
 import com.hhplus.backend.domain.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,9 +14,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -57,7 +51,7 @@ public class PaymentServiceTest {
         this.basicSchedule = new ConcertSchedule(id, concertId, LocalDateTime.now().minusDays(1));
         this.basicSeat = new ConcertSeat(seatId, scheduleId, seatNo);
         this.basicReservations = new SeatReservation(userId, basicSchedule, basicSeat);
-        basicReservations.setCreateAt(LocalDateTime.now());
+        basicReservations.setCreatedAt(LocalDateTime.now());
         this.basicUserPoint = new UserPoint(id, userId, point);
     }
 

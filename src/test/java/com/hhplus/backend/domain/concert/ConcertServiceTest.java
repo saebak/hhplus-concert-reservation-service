@@ -114,7 +114,7 @@ public class ConcertServiceTest {
         given(concertRepository.findConcertScheduleById(anyLong())).willReturn(basicSchedule.get(2));
         given(concertRepository.findConcertSeat(anyLong(),anyLong(),anyLong())).willReturn(basicSeat.get(4));
         SeatReservation alreadySeatReservation = new SeatReservation(command.userId, basicSchedule.get(2), basicSeat.get(4));
-        alreadySeatReservation.setCreateAt(LocalDateTime.now());
+        alreadySeatReservation.setCreatedAt(LocalDateTime.now());
         given(concertRepository.findValidSeatReservation(anyLong(),anyLong(),anyLong(),any())).willReturn(alreadySeatReservation);
         SeatReservation newSeatReservation = new SeatReservation(command.userId, basicSchedule.get(2), basicSeat.get(4));
         given(concertRepository.saveSeatReservation(any())).willReturn(newSeatReservation);
