@@ -24,19 +24,14 @@ public class AuthTokenInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        log.debug("==================== BEGIN ====================");
 //        log.debug("Request URI ===> " + request.getRequestURI());
-
-        // 포인트관련 api는 검증 제외
-        String reqUrl = request.getRequestURI();
-        if("/user/*".equalsIgnoreCase(reqUrl)){
-            return true;
-        }
         // 토큰 검증
-        Long userId = Long.valueOf(request.getSession().getId());
+        //Long userId = Long.valueOf(request.getSession().getId());
+        long userId = 1; // 임의로 값 설정
         UserToken userToken = queueService.getToken(userId);
 
         if (!userToken.isActive()) {
             NotActivateTokenException e = new NotActivateTokenException("Not activate token");
-            log.info(e.getMessage());
+            log.warn(e.getMessage());
             return false;
         };
 
