@@ -29,8 +29,8 @@ public class SeatReservationEntity {
     @Column(name="SEAT_ID")
     private Long seatId;
 
-    @Column(name="STATUS")
-    private String status;
+//    @Column(name="STATUS")
+//    private String status;
 
     @CreatedDate
     @Column(name="CREATED_AT")

@@ -36,5 +36,11 @@ public class Payment {
     private String status;
 
     @Getter
+    public LocalDateTime createdAt;
+
+    @Getter
+    public LocalDateTime updatedAt;
+
+    @Getter
     private SeatReservation seatReservation;
 }

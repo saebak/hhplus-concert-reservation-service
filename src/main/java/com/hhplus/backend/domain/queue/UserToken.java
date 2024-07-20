@@ -37,11 +37,13 @@ public class UserToken {
     // 토큰 만료상태로 변경
     public void expire () {
         this.status = "EXPIRED";
+        this.udpateAt = LocalDateTime.now();
     }
 
     // 토큰 활성화상태로 변경
     public void active() {
         this.status = "ACTIVE";
+        this.udpateAt = LocalDateTime.now();
     }
 
     // 신규 토큰 생성

@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 
 import com.hhplus.backend.domain.exception.NotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ConcertService {
 
     @Autowired
@@ -43,13 +45,27 @@ public class ConcertService {
         concertSchedule.checkReservationCondition();    // 콘서트 스케쥴 검증
 
         ConcertSeat seat = concertRepository.findConcertSeat(command.concertId, command.scheduleId, command.seatId);
-        if(seat == null) throw new NotFoundException("없는 좌석입니다.");   // 존재하는 좌석인지 검증
+        if(seat.getId() == null) throw new NotFoundException("없는 좌석입니다.");   // 존재하는 좌석인지 검증
 
         // 다른 사람예약이 점유중인지 확인해야함.
+        // 상태값 (유니크값 추가해서) 해라...
         SeatReservation seatReservation = concertRepository.findValidSeatReservation(command.concertId, command.scheduleId, command.seatId, now);
-        if (seatReservation != null ) seatReservation.checkReserved(now);
+        System.out.println("!!!!!SeatReservation!!!!!!!! : " + seatReservation);
+        if (seatReservation.getId() != null ) seatReservation.checkReserved(now);
 
         SeatReservation newReservation = new SeatReservation(command.userId, concertSchedule, seat);
-        return concertRepository.saveSeatReservation(newReservation);
+        var result = concertRepository.saveSeatReservation(newReservation);
+        System.out.println("여기요 : " + result);
+        return result;
+    }
+
+    // 예약중인 좌석 조회
+    @Transactional
+    public SeatReservation getReservedSeat(ConcertCommand.GetSeatReservation command) throws Exception {
+        LocalDateTime now = LocalDateTime.now();
+
+        // 내가 예약한 좌석 조회
+        SeatReservation seatReservation = concertRepository.getReservedSeat(command.concertId, command.scheduleId, command.seatId, command.userId);
+        return seatReservation;
     }
 }

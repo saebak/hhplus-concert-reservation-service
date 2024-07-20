@@ -3,6 +3,8 @@ package com.hhplus.backend.controller.concert.mapper;
 import com.hhplus.backend.domain.concert.SeatReservation;
 import com.hhplus.backend.infra.concert.entity.SeatReservationEntity;
 
+import java.time.LocalDateTime;
+
 public class SeatReservationMapper {
 
     /**
@@ -17,7 +19,7 @@ public class SeatReservationMapper {
                 .concertId(entity.getConcertId())
                 .scheduleId(entity.getScheduleId())
                 .seatId(entity.getSeatId())
-                .createAt(entity.getCreatedAt())
+                .createdAt(entity.getCreatedAt())
                 .build();
     }
 
@@ -29,12 +31,13 @@ public class SeatReservationMapper {
      */
     public static SeatReservationEntity toEntity(SeatReservation domain) {
         SeatReservationEntity entity = new SeatReservationEntity();
-        entity.setId(domain.getId());
+        //entity.setId(domain.getId());
         entity.setUserId(domain.getUserId());
-        entity.setConcertId(domain.getConcertId());
-        entity.setScheduleId(domain.getScheduleId());
-        entity.setSeatId(domain.getSeatId());
-        entity.setCreatedAt(domain.getCreateAt());
+        entity.setConcertId(domain.getConcertSchedule().getConcertId());
+        entity.setScheduleId(domain.getConcertSchedule().getId());
+        entity.setSeatId(domain.getSeat().getId());
+        entity.setCreatedAt(LocalDateTime.now());
+        entity.setUpdatedAt(LocalDateTime.now());
         return entity;
     }
 }

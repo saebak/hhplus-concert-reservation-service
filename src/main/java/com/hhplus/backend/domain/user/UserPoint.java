@@ -7,10 +7,13 @@ import lombok.Data;
 import lombok.Getter;
 import org.apache.coyote.BadRequestException;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
 public class UserPoint {
+
 
     @Getter
     private Long id;
@@ -20,6 +23,18 @@ public class UserPoint {
 
     @Getter
     private int point;
+
+    @Getter
+    public LocalDateTime createdAt;
+
+    @Getter
+    public LocalDateTime updatedAt;
+
+    public UserPoint (Long id, Long userId, int point) {
+        this.id = id;
+        this.userId = userId;
+        this.point = point;
+    }
 
     public void plusPoint(int addPoint) {
         this.point = this.point + addPoint;

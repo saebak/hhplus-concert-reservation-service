@@ -28,6 +28,10 @@ public class PaymentService {
 
         LocalDateTime now = LocalDateTime.now();
         Payment info = new Payment();
+
+        // 결제 목록에 있는 좌석인지 확인 로직 필요 ^^,,
+        // paymentRepository.findById();
+
         // 결제 가능한거야? 아직 유효해?
         SeatReservation seatReservation = concertRepository.findValidSeatReservation(command.concertId, command.scheduleId, command.seatId, now);
         seatReservation.checkPayment(command.userId, now);
@@ -42,6 +46,7 @@ public class PaymentService {
         UserPoint usePoint = userRepository.updateUserPoint(userPoint);
         info.setPrice(command.price);
         info.setStatus("PAYMENT");
+        info.setCreatedAt(LocalDateTime.now());
 
         Payment payment = paymentRepository.savePayment(info);
         return payment;

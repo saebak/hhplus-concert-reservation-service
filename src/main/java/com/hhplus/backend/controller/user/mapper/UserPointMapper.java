@@ -17,6 +17,8 @@ public class UserPointMapper {
                 .id(entity.getId())
                 .userId(entity.getUserId())
                 .point(entity.getPoint())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 
@@ -31,6 +33,8 @@ public class UserPointMapper {
         entity.setId(domain.getId());
         entity.setUserId(domain.getUserId());
         entity.setPoint(domain.getPoint());
+        entity.setCreatedAt(domain.getCreatedAt());
+        entity.setUpdatedAt(domain.getUpdatedAt());
         return entity;
     }
 }

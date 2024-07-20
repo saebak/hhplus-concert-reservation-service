@@ -14,4 +14,5 @@ public interface ConcertSeatJpaRepository extends JpaRepository<ConcertSeatEntit
 
     // 해당 좌석이 존재하는가 조회
     ConcertSeatEntity findByIdAndConcertIdAndScheduleId(Long seatId, Long concertId, Long scheduleId);
+
 }

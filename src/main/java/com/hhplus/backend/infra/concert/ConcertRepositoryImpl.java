@@ -74,14 +74,22 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     @Override
     public ConcertSeat findConcertSeat(Long concertId, Long scheduleId, Long seatId) {
         ConcertSeatEntity concertSeatEntity = concertSeatJpaRepository.findByIdAndConcertIdAndScheduleId(seatId, concertId, scheduleId);
-        ConcertSeat concertSeat = ConcertSeatMapper.toDomain(concertSeatEntity);
+        ConcertSeat concertSeat = new ConcertSeat();
+        if (concertSeatEntity != null) {
+            concertSeat = ConcertSeatMapper.toDomain(concertSeatEntity);
+        }
         return concertSeat;
     }
 
     @Override
     public SeatReservation findValidSeatReservation(Long concertId, Long scheduleId, Long seatId, LocalDateTime now) {
         SeatReservationEntity seatReservationEntity = seatReservationJpaRepository.findByConcertIdAndScheduleIdAndSeatIdAndCreatedAtLessThan(concertId,scheduleId,seatId,now);
-        SeatReservation seatReservation = SeatReservationMapper.toDomain(seatReservationEntity);
+//        SeatReservationEntity seatReservationEntity = seatReservationJpaRepository.findByConcertId(concertId);
+        System.out.println("~~~~~seatReservationEntity~~~~~~~~~ : " + seatReservationEntity);
+        SeatReservation seatReservation = new SeatReservation();
+        if (seatReservationEntity != null) {
+            seatReservation = SeatReservationMapper.toDomain(seatReservationEntity);
+        }
         return seatReservation;
     }
 
@@ -91,4 +99,15 @@ public class ConcertRepositoryImpl implements ConcertRepository {
         SeatReservation result = SeatReservationMapper.toDomain(seatReservationEntity);
         return result;
     }
+
+    @Override
+    public SeatReservation getReservedSeat(Long concertId, Long scheduleId, Long seatId, Long userId) {
+        SeatReservationEntity seatReservationEntity = seatReservationJpaRepository.findByConcertIdAndScheduleIdAndSeatIdAndUserId(concertId,scheduleId,seatId,userId);
+        SeatReservation seatReservation = new SeatReservation();
+        if (seatReservationEntity != null) {
+            seatReservation = SeatReservationMapper.toDomain(seatReservationEntity);
+        }
+        return seatReservation;
+    }
+
 }

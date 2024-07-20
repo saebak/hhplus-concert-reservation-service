@@ -27,4 +27,7 @@ public interface ConcertRepository {
     
     // 좌석 예약 요청
     SeatReservation saveSeatReservation(SeatReservation seatReservation);
+    
+    // 예약한 좌석 조회
+    SeatReservation getReservedSeat(Long concertId, Long scheduleId, Long seatId, Long userId);
 }

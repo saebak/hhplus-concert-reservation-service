@@ -31,12 +31,12 @@ public class PaymentMapper {
      */
     public static PaymentEntity toEntity(Payment domain) {
         PaymentEntity entity = new PaymentEntity();
-        entity.setId(domain.getId());
-        entity.setUserId(domain.getUserId());
-        entity.setConcertId(domain.getConcertId());
+        //entity.setId(domain.getId());
+        entity.setUserId(domain.getSeatReservation().getUserId());
+        entity.setConcertId(domain.getSeatReservation().getConcertId());
         entity.setConcertTitle(domain.getConcertTitle());
-        entity.setScheduleId(domain.getScheduleId());
-        entity.setSeatId(domain.getSeatId());
+        entity.setScheduleId(domain.getSeatReservation().getScheduleId());
+        entity.setSeatId(domain.getSeatReservation().getSeatId());
         entity.setPrice(domain.getPrice());
         entity.setStatus(domain.getStatus());
         return entity;

@@ -16,6 +16,8 @@ public class TokenMapper {
                 .userId(entity.getUserId())
                 .accessToken(entity.getAccessToken())
                 .status(entity.getStatus())
+                .createAt(entity.getCreatedAt())
+                .udpateAt(entity.getUpdatedAt())
                 .build();
     }
 
@@ -31,6 +33,8 @@ public class TokenMapper {
         entity.setUserId(domain.getUserId());
         entity.setAccessToken(domain.getAccessToken());
         entity.setStatus(domain.getStatus());
+        entity.setCreatedAt(domain.getCreateAt());
+        entity.setUpdatedAt(domain.getUdpateAt());
         return entity;
     }
 }
