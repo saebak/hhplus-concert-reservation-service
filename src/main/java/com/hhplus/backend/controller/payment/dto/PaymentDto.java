@@ -16,6 +16,8 @@ public class PaymentDto {
     // 유저 아이디
     private Long userId;
 
+    private int usePoint;
+
     @Data
     public static class Response {
         private Payment payment;

@@ -1,5 +1,6 @@
 package com.hhplus.backend.domain.concert;
 
+import com.hhplus.backend.domain.exception.AlreadyReservedSeatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -113,14 +114,14 @@ public class ConcertServiceTest {
         given(concertRepository.findConcertScheduleById(anyLong())).willReturn(basicSchedule.get(2));
         given(concertRepository.findConcertSeat(anyLong(),anyLong(),anyLong())).willReturn(basicSeat.get(4));
         SeatReservation alreadySeatReservation = new SeatReservation(command.userId, basicSchedule.get(2), basicSeat.get(4));
-        alreadySeatReservation.setCreateAt(LocalDateTime.now());
+        alreadySeatReservation.setCreatedAt(LocalDateTime.now());
         given(concertRepository.findValidSeatReservation(anyLong(),anyLong(),anyLong(),any())).willReturn(alreadySeatReservation);
         SeatReservation newSeatReservation = new SeatReservation(command.userId, basicSchedule.get(2), basicSeat.get(4));
         given(concertRepository.saveSeatReservation(any())).willReturn(newSeatReservation);
 
         // when
         // then
-        assertThatExceptionOfType(Exception.class)
+        assertThatExceptionOfType(AlreadyReservedSeatException.class)
                 .isThrownBy(()->{
                     concertService.reserveSeat(command);
                 }).withMessage("이미 예약된 좌석입니다.");

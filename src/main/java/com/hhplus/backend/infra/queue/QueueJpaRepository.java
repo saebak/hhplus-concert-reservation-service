@@ -13,7 +13,8 @@ import org.springframework.data.repository.query.Param;
 public interface QueueJpaRepository extends JpaRepository<UserTokenEntity, Long> {
 
     // 사용자 토큰 조회
-    Optional<UserTokenEntity> findByUserId(long userId);
+    @Query(value = "SELECT * FROM USER_TOKEN WHERE USER_ID = :userId AND STATUS != 'EXPIRED'", nativeQuery = true)
+    Optional<UserTokenEntity> findByUserId(@Param("userId")long userId);
 
     // 활성화된 토큰 갯수 count
     Long countByStatus(String active);

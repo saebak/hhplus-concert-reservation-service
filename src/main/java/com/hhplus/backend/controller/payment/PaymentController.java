@@ -19,9 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
 
     @Autowired
-    private PaymentService paymentService;
-
-    @Autowired
     private PaymentTokenFacade paymentTokenFacade;
 
     /**
@@ -37,6 +34,7 @@ public class PaymentController {
         command.setScheduleId(paymentDto.getSeatReservation().getScheduleId());
         command.setSeatId(paymentDto.getSeatReservation().getSeatId());
         command.setUserId(paymentDto.getSeatReservation().getUserId());
+        command.setPrice(paymentDto.getUsePoint());
         PaymentDto.Response response = paymentTokenFacade.payAfterExpireToken(command);
 
         return ResponseEntity.ok().body(response);

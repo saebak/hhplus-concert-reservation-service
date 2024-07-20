@@ -1,15 +1,19 @@
 package com.hhplus.backend.domain.user;
 
+import com.hhplus.backend.domain.exception.NotEnoughPointException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import org.apache.coyote.BadRequestException;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
 public class UserPoint {
+
 
     @Getter
     private Long id;
@@ -20,13 +24,25 @@ public class UserPoint {
     @Getter
     private int point;
 
+    @Getter
+    public LocalDateTime createdAt;
+
+    @Getter
+    public LocalDateTime updatedAt;
+
+    public UserPoint (Long id, Long userId, int point) {
+        this.id = id;
+        this.userId = userId;
+        this.point = point;
+    }
+
     public void plusPoint(int addPoint) {
         this.point = this.point + addPoint;
     }
 
     public void minusPoint(int usePoint) throws Exception {
         if (this.point-usePoint < 0) {
-            throw new BadRequestException("포인트가 부족합니다.");
+            throw new NotEnoughPointException("포인트가 부족합니다.");
         }
         this.point = this.point-usePoint;
     }

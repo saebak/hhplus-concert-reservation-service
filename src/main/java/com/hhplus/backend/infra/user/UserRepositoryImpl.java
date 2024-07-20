@@ -5,8 +5,10 @@ import com.hhplus.backend.controller.user.mapper.UserPointMapper;
 import com.hhplus.backend.domain.user.User;
 import com.hhplus.backend.domain.user.UserPoint;
 import com.hhplus.backend.domain.user.UserRepository;
+import com.hhplus.backend.infra.queue.QueueJpaRepository;
 import com.hhplus.backend.infra.user.entity.UserEntity;
 import com.hhplus.backend.infra.user.entity.UserPointEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -25,7 +27,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getUser(long userId) {
         Optional<UserEntity> user = userJpaRepository.findById(userId);
-        User result = UserMapper.toDomain(user.get());
+        UserEntity userEntity = user.get();
+        User result = UserMapper.toDomain(userEntity);
         return result;
     }
 

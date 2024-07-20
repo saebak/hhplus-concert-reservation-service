@@ -34,7 +34,7 @@ public class QueueService {
         UserToken alreadyToken = queueRepository.findToken(userId);
 
         // 이미 토큰이 존재하면 만료시키고 새로 발급 (새로고침하면 다시 처음부터이듯이....)
-        if (alreadyToken != null) {
+        if (alreadyToken.getId() != null) {
             alreadyToken.expire();
             queueRepository.saveUserToken(alreadyToken);
         }

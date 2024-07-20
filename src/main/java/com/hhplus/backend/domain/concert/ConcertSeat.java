@@ -19,4 +19,7 @@ public class ConcertSeat {
     @Getter
     private int seatNo;
 
+    public ConcertSeat() {
+
+    }
 }

@@ -25,7 +25,10 @@ public class QueueRepositoryImpl implements QueueRepository {
     @Override
     public UserToken findToken(Long userId) {
         Optional<UserTokenEntity> userTokenEntity = queueJpaRepository.findByUserId(userId);
-        UserToken userToken = TokenMapper.toDomain(userTokenEntity.get());
+        UserToken userToken = new UserToken();
+        if (userTokenEntity.isPresent()) {
+            userToken = TokenMapper.toDomain(userTokenEntity.get());
+        }
         return userToken;
     }
 

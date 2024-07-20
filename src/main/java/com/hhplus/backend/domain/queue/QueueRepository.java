@@ -7,7 +7,7 @@ public interface QueueRepository {
     
     // 토큰 조회
     UserToken findToken(Long userId);
-    
+
     // 토큰 발급
     UserToken saveUserToken(UserToken token);
     

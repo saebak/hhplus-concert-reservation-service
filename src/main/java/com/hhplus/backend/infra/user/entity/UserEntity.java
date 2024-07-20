@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name="USER")
+@Table(name="USERS")
 public class UserEntity {
 
     @Id
@@ -22,7 +22,7 @@ public class UserEntity {
     // 사용자 정보 ~
 
     @CreatedDate
-    @Column(name="CREATE_AT")
+    @Column(name="CREATED_AT")
     private LocalDateTime createdAt;
 
 }

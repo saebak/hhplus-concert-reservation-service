@@ -29,12 +29,12 @@ public class UserController {
      * @param userId
      * @return
      */
-    @GetMapping("/{userId}")
+    @GetMapping("/point/{userId}")
     public ResponseEntity<UserPoint> point(
             @PathVariable long userId
     ) {
         UserPoint userPoint = userService.getUserPoint(userId);
-        return ResponseEntity.ok().body(userPoint);
+        return ResponseEntity.ok(userPoint);
     }
 
     /**
@@ -43,7 +43,7 @@ public class UserController {
      * @param amount
      * @return
      */
-    @PatchMapping("/{userId}/charge")
+    @PatchMapping("/point/{userId}/charge")
     public ResponseEntity<UserPoint> charge(
             @PathVariable long userId,
             @RequestBody int amount
@@ -57,7 +57,7 @@ public class UserController {
      * @param userId
      * @return
      */
-    @GetMapping("/{userId}/histories")
+    @GetMapping("/point/{userId}/histories")
     public ResponseEntity<List<PointHistory>> history(
             @PathVariable long userId
     ) {
