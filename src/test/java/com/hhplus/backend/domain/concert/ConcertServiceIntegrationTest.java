@@ -32,7 +32,6 @@ public class ConcertServiceIntegrationTest {
         CountDownLatch latch = new CountDownLatch(threadCnt);                       // 모든 스레드가 작업 완료할때 까지 대기
         long id = 1;
         AtomicInteger failCnt = new AtomicInteger();
-        AtomicInteger successCnt = new AtomicInteger();
 
         for (int i=1; i<=threadCnt; i++) {
             long finalI = i;
@@ -44,7 +43,6 @@ public class ConcertServiceIntegrationTest {
                     command.scheduleId = 1L;
                     command.userId = finalI;
                     concertService.reserveSeat(command);
-                    successCnt.getAndIncrement();
                 } catch (AlreadyReservedSeatException e) {
                     failCnt.getAndIncrement();
                 } catch (Exception e) {
@@ -57,8 +55,6 @@ public class ConcertServiceIntegrationTest {
         latch.await();                  // 모든 thread가 종료될대까지 기다림
         executorService.shutdown();     // thread풀 종료
 
-        System.out.println("!!!!!!!!!!!!!! : " + successCnt);
-
         ConcertCommand.GetSeatReservation command = new ConcertCommand.GetSeatReservation();
         command.concertId = 1L;
         command.seatId = 5L;
@@ -68,8 +64,9 @@ public class ConcertServiceIntegrationTest {
 
         // then
         assertThat(seatReservation).isNotNull();
-        assertThat(failCnt).isEqualTo(1);
         assertThat(seatReservation.getUserId()).isEqualTo(command.userId);
+        assertThat(seatReservation.getSeatId()).isEqualTo(command.seatId);
+        assertThat(seatReservation.getStatus()).isEqualTo("PENDING");
     }
 
 }

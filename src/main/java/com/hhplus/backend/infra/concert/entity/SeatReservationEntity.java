@@ -26,11 +26,11 @@ public class SeatReservationEntity {
     @Column(name="SCHEDULE_ID")
     private Long scheduleId;
 
-    @Column(name="SEAT_ID")
+    @Column(name="SEAT_ID", unique = true)
     private Long seatId;
 
-//    @Column(name="STATUS")
-//    private String status;
+    @Column(name="STATUS", unique = true)
+    private String status;
 
     @CreatedDate
     @Column(name="CREATED_AT")

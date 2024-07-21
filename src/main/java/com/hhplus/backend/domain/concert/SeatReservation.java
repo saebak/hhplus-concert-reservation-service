@@ -28,6 +28,9 @@ public class SeatReservation {
     private Long seatId;
 
     @Getter
+    private String status;
+
+    @Getter
     private ConcertSeat seat;
 
     @Getter
@@ -40,14 +43,14 @@ public class SeatReservation {
         this.userId = userId;
         this.concertSchedule = concertSchedule;
         this.seat = seat;
+        this.status = "PENDING";
         this.createdAt = LocalDateTime.now();
     }
 
     public void checkReserved(LocalDateTime now) throws Exception {
         // 예약 요청한지 5분 지난 좌석은 예약 가능
-        System.out.println("==========================================");
-        System.out.println(this.createdAt.isBefore(now.plusMinutes(5)));
         if (this.createdAt.isBefore(now.plusMinutes(5))) throw new AlreadyReservedSeatException("이미 예약된 좌석입니다.");
+        if (this.createdAt.isAfter(now.plusMinutes(5))) this.status = "EXPIRED";
         //if (this.id != null) throw new AlreadyReservedSeatException("이미 예약된 좌석입니다.");
     }
 

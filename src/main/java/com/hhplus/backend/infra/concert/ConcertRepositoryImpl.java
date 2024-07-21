@@ -85,7 +85,6 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public SeatReservation findValidSeatReservation(Long concertId, Long scheduleId, Long seatId, LocalDateTime now) {
         SeatReservationEntity seatReservationEntity = seatReservationJpaRepository.findByConcertIdAndScheduleIdAndSeatIdAndCreatedAtLessThan(concertId,scheduleId,seatId,now);
 //        SeatReservationEntity seatReservationEntity = seatReservationJpaRepository.findByConcertId(concertId);
-        System.out.println("~~~~~seatReservationEntity~~~~~~~~~ : " + seatReservationEntity);
         SeatReservation seatReservation = new SeatReservation();
         if (seatReservationEntity != null) {
             seatReservation = SeatReservationMapper.toDomain(seatReservationEntity);
