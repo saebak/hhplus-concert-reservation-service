@@ -48,14 +48,14 @@ public class ConcertService {
         if(seat.getId() == null) throw new NotFoundException("없는 좌석입니다.");   // 존재하는 좌석인지 검증
 
         // 다른 사람예약이 점유중인지 확인해야함.
-        // 상태값 (유니크값 추가해서) 해라...
         SeatReservation seatReservation = concertRepository.findValidSeatReservation(command.concertId, command.scheduleId, command.seatId, now);
-        System.out.println("!!!!!SeatReservation!!!!!!!! : " + seatReservation);
-        if (seatReservation.getId() != null ) seatReservation.checkReserved(now);
+        if (seatReservation.getId() != null ) {
+            seatReservation.checkReserved(now);
+            concertRepository.saveSeatReservation(seatReservation);    // 예약 시간이 지난 예약건들을 만료로 저장
+        }
 
         SeatReservation newReservation = new SeatReservation(command.userId, concertSchedule, seat);
         var result = concertRepository.saveSeatReservation(newReservation);
-        System.out.println("여기요 : " + result);
         return result;
     }
 
