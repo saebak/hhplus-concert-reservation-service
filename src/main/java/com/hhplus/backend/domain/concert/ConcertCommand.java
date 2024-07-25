@@ -1,5 +1,8 @@
 package com.hhplus.backend.domain.concert;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 public class ConcertCommand {
 
     public static class GetConcertSchedules {
@@ -12,6 +15,8 @@ public class ConcertCommand {
         public Long scheduleId;
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class GetSeatReservation {
 
         public Long concertId;

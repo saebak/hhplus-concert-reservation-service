@@ -50,8 +50,7 @@ public class ConcertService {
         // 다른 사람예약이 점유중인지 확인해야함.
         SeatReservation seatReservation = concertRepository.findValidSeatReservation(command.concertId, command.scheduleId, command.seatId, now);
         if (seatReservation.getId() != null ) {
-            seatReservation.checkReserved(now);
-            concertRepository.saveSeatReservation(seatReservation);    // 예약 시간이 지난 예약건들을 만료로 저장
+            seatReservation.checkReserved(now);   // 예약한지 5분이 지나지 않은 예약인지 확인
         }
 
         SeatReservation newReservation = new SeatReservation(command.userId, concertSchedule, seat);
@@ -66,6 +65,14 @@ public class ConcertService {
 
         // 내가 예약한 좌석 조회
         SeatReservation seatReservation = concertRepository.getReservedSeat(command.concertId, command.scheduleId, command.seatId, command.userId);
+        return seatReservation;
+    }
+
+    // 예약된 좌석 전체 조회
+    @Transactional
+    public List<SeatReservation> getReservedSeats() throws Exception {
+        // 내가 예약한 좌석 조회
+        List<SeatReservation> seatReservation = concertRepository.getReservedSeats();
         return seatReservation;
     }
 }

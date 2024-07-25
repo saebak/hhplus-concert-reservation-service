@@ -12,10 +12,11 @@ import java.time.LocalDateTime;
 public interface SeatReservationJpaRepository extends JpaRepository<SeatReservationEntity, Long> {
 
     // 점유중인 좌석인지 조회
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    SeatReservationEntity findByConcertIdAndScheduleIdAndSeatIdAndCreatedAtLessThan(Long concertId, Long scheduleId, Long seatId, LocalDateTime now);
-//    @Query(value = "SELECT e FROM SeatReservationEntity e WHERE e.concertId = :concertId")
-//    SeatReservationEntity findByConcertId(Long concertId);
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @Lock(LockModeType.OPTIMISTIC)
+//    @Query(value = "SELECT e FROM SeatReservationEntity e WHERE e.concertId = :concertId AND e.scheduleId = :scheduleId AND e.seatId = :seatId AND e.status = 'PENDING'")
+    SeatReservationEntity findByConcertIdAndScheduleIdAndSeatId(Long concertId, Long scheduleId, Long seatId);
+//    SeatReservationEntity findByConcertIdAndScheduleIdAndSeatIdAndCreatedAtLessThan(Long concertId, Long scheduleId, Long seatId, LocalDateTime now);
 
     // 예약 요청
     SeatReservationEntity save(SeatReservationEntity seatReservationEntity);
