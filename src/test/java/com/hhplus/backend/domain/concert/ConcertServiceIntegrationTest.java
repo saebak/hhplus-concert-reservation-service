@@ -1,7 +1,6 @@
 package com.hhplus.backend.domain.concert;
 
 import com.hhplus.backend.domain.exception.AlreadyReservedSeatException;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Transactional
 @DisplayName("좌석 점유 및 동시성 통합 테스트")
 public class ConcertServiceIntegrationTest {
 
@@ -65,7 +63,7 @@ public class ConcertServiceIntegrationTest {
 
     @Test
     @DisplayName("동시에 5명의 사용자가 같은 좌석 예약 요청을 동시에 했을 경우 비관적락 사용하여 처리")
-    public void reserveSeatIntegrationTest() throws Exception {
+    public void reserveSeatIntegrationPessimisticTest() throws Exception {
         // given
         int threadCnt = 10;
         ExecutorService executorService = Executors.newFixedThreadPool(threadCnt);  // 고정된 스레드 풀을 생성하여 여러 스레드에서 작업을 실행

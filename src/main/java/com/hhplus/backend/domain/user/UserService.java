@@ -1,6 +1,7 @@
 package com.hhplus.backend.domain.user;
 
 import com.hhplus.backend.domain.exception.NotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class UserService {
     }
 
     // 포인트 충전
+    @Transactional
     public UserPoint chargePoint(long userId, int amount) throws Exception {
         User user = userRepository.getUser(userId);
         if (user == null) {
@@ -40,6 +42,7 @@ public class UserService {
     }
 
     // 포인트 사용
+    @Transactional
     public UserPoint usePoint(long userId, int usePoint) throws Exception {
         User user = userRepository.getUser(userId);
         if (user == null) {
