@@ -60,7 +60,6 @@ public class ConcertService {
     }
 
     // 예약중인 좌석 조회
-    @Transactional
     public SeatReservation getReservedSeat(ConcertCommand.GetSeatReservation command) throws Exception {
         LocalDateTime now = LocalDateTime.now();
 
@@ -70,7 +69,6 @@ public class ConcertService {
     }
 
     // 예약된 좌석 전체 조회
-    @Transactional
     public List<SeatReservation> getReservedSeats() throws Exception {
         List<SeatReservation> seatReservation = concertRepository.getReservedSeats();
         return seatReservation;

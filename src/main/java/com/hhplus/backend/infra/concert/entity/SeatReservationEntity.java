@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @Table(name="SEAT_RESERVATION")
 public class SeatReservationEntity {
 
+    @Version
+    private Long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ID")

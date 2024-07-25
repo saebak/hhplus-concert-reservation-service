@@ -8,9 +8,8 @@ import org.springframework.data.jpa.repository.Lock;
 public interface SeatReservationJpaRepository extends JpaRepository<SeatReservationEntity, Long> {
 
     // 점유중인 좌석인지 조회
-//    @Lock(LockModeType.OPTIMISTIC)
-    // 비관적 락 사용
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    // 낙관적 락 사용
+    @Lock(LockModeType.OPTIMISTIC)
     SeatReservationEntity findTop1ByConcertIdAndScheduleIdAndSeatIdOrderByCreatedAtDesc(Long concertId, Long scheduleId, Long seatId);
 
     // 예약 요청
