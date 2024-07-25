@@ -1,6 +1,7 @@
 package com.hhplus.backend.domain.user;
 
 import com.hhplus.backend.domain.exception.NotFoundException;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

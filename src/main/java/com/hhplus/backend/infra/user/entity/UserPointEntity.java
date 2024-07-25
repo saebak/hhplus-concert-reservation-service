@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 @Table(name="USER_POINT")
 public class UserPointEntity {
 
+    @Version
+    private long version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ID")

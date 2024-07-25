@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Lock;
 public interface UserPointJpaRepository extends JpaRepository<UserPointEntity, Long> {
     
     // 사용자 포인트 조회
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.OPTIMISTIC)
     UserPointEntity findByUserId(long userId);
 
 }
