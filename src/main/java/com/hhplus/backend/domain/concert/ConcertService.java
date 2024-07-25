@@ -55,6 +55,7 @@ public class ConcertService {
 
         SeatReservation newReservation = new SeatReservation(command.userId, concertSchedule, seat);
         var result = concertRepository.saveSeatReservation(newReservation);
+        System.out.println("예약성공 : id =  " + result.getId() + ", userId = " + result.getUserId());
         return result;
     }
 
@@ -71,7 +72,6 @@ public class ConcertService {
     // 예약된 좌석 전체 조회
     @Transactional
     public List<SeatReservation> getReservedSeats() throws Exception {
-        // 내가 예약한 좌석 조회
         List<SeatReservation> seatReservation = concertRepository.getReservedSeats();
         return seatReservation;
     }

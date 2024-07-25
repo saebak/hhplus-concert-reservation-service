@@ -83,7 +83,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
 
     @Override
     public SeatReservation findValidSeatReservation(Long concertId, Long scheduleId, Long seatId, LocalDateTime now) {
-        SeatReservationEntity seatReservationEntity = seatReservationJpaRepository.findByConcertIdAndScheduleIdAndSeatId(concertId,scheduleId,seatId);
+        SeatReservationEntity seatReservationEntity = seatReservationJpaRepository.findTop1ByConcertIdAndScheduleIdAndSeatIdOrderByCreatedAtDesc(concertId,scheduleId,seatId);
         SeatReservation seatReservation = new SeatReservation();
         if (seatReservationEntity != null) {
             seatReservation = SeatReservationMapper.toDomain(seatReservationEntity);

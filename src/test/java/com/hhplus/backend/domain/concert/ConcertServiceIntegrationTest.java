@@ -30,7 +30,6 @@ public class ConcertServiceIntegrationTest {
         int threadCnt = 5;
         ExecutorService executorService = Executors.newFixedThreadPool(threadCnt);  // 고정된 스레드 풀을 생성하여 여러 스레드에서 작업을 실행
         CountDownLatch latch = new CountDownLatch(threadCnt);                       // 모든 스레드가 작업 완료할때 까지 대기
-        long id = 1;
         AtomicInteger failCnt = new AtomicInteger();
         AtomicInteger successCnt = new AtomicInteger();
 
@@ -62,34 +61,40 @@ public class ConcertServiceIntegrationTest {
         int successCount = successCnt.get();
         assertThat(successCount).isEqualTo(threadCnt);
         assertThat(seatReservations.size()).isEqualTo(threadCnt);
-
     }
 
     @Test
-    @DisplayName("여러 스레드가 좌석 예약시 동시성 제어 테스트")
+    @DisplayName("동시에 5명의 사용자가 같은 좌석 예약 요청을 동시에 했을 경우 비관적락 사용하여 처리")
     public void reserveSeatIntegrationTest() throws Exception {
         // given
-        int threadCnt = 2;
+        int threadCnt = 10;
         ExecutorService executorService = Executors.newFixedThreadPool(threadCnt);  // 고정된 스레드 풀을 생성하여 여러 스레드에서 작업을 실행
         CountDownLatch latch = new CountDownLatch(threadCnt);                       // 모든 스레드가 작업 완료할때 까지 대기
-        long id = 1;
         AtomicInteger failCnt = new AtomicInteger();
+        AtomicInteger successCnt = new AtomicInteger();
+
+        // 각 스레드별로 걸린 시간을 저장할 배열
+        long[] threadTimes = new long[threadCnt];
 
         for (int i=1; i<=threadCnt; i++) {
             long finalI = i;
             executorService.submit(() -> {
+                long threadStartTime = System.currentTimeMillis();
                 try {
-                    ConcertCommand.GetSeatReservation command = new ConcertCommand.GetSeatReservation();
-                    command.concertId = 1L;
-                    command.seatId = 5L;
-                    command.scheduleId = 1L;
-                    command.userId = finalI;
+                    ConcertCommand.GetSeatReservation command = new ConcertCommand.GetSeatReservation(1L, 1L, 5L, finalI);
                     concertService.reserveSeat(command);
+                    successCnt.getAndIncrement();
                 } catch (AlreadyReservedSeatException e) {
+                    System.out.println(e.getMessage());
                     failCnt.getAndIncrement();
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    //throw new RuntimeException(e);
+                    System.out.println(e.getMessage());
+                    failCnt.getAndIncrement();
                 } finally {
+                    long threadEndTime = System.currentTimeMillis();
+                    threadTimes[(int) finalI-1] = threadEndTime - threadStartTime;
+                    System.out.println("걸린 시간 : " + threadTimes[(int) finalI -1]);
                     latch.countDown();
                 }
             });
@@ -97,17 +102,14 @@ public class ConcertServiceIntegrationTest {
         latch.await();                  // 모든 thread가 종료될대까지 기다림
         executorService.shutdown();     // thread풀 종료
 
-        ConcertCommand.GetSeatReservation command = new ConcertCommand.GetSeatReservation();
-        command.concertId = 1L;
-        command.seatId = 5L;
-        command.scheduleId = 1L;
-        command.userId = 1L;
+        ConcertCommand.GetSeatReservation command = new ConcertCommand.GetSeatReservation(1L, 1L, 5L, 1L);
         SeatReservation seatReservation = concertService.getReservedSeat(command);
 
         // then
-        assertThat(seatReservation).isNotNull();
-        assertThat(seatReservation.getUserId()).isEqualTo(command.userId);
-        assertThat(seatReservation.getSeatId()).isEqualTo(command.seatId);
+        int failCount = failCnt.get();
+        int successCount = successCnt.get();
+        assertThat(successCount).isEqualTo(1);
+        assertThat(failCount).isEqualTo(9);
     }
 
 }
