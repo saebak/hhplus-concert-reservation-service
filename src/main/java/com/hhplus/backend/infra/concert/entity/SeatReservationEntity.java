@@ -12,9 +12,6 @@ import java.time.LocalDateTime;
 @Table(name="SEAT_RESERVATION")
 public class SeatReservationEntity {
 
-    @Version
-    private Long version;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ID")
@@ -32,8 +29,8 @@ public class SeatReservationEntity {
     @Column(name="SEAT_ID")
     private Long seatId;
 
-//    @Column(name="STATUS", unique = true)
-//    private String status;
+    @Column(name="STATUS")
+    private String status;
 
     @CreatedDate
     @Column(name="CREATED_AT")
@@ -42,5 +39,8 @@ public class SeatReservationEntity {
     @LastModifiedDate
     @Column(name="UPDATED_AT")
     private LocalDateTime updatedAt;
+
+    @Version
+    private Long version;
 
 }

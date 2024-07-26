@@ -51,15 +51,18 @@ public class ConcertService {
         SeatReservation seatReservation = concertRepository.findValidSeatReservation(command.concertId, command.scheduleId, command.seatId, now);
         if (seatReservation.getId() != null ) {
             seatReservation.checkReserved(now);   // 예약한지 5분이 지나지 않은 예약인지 확인
+            seatReservation.setSeat(seat);
+            seatReservation.setConcertSchedule(concertSchedule);
+            concertRepository.saveSeatReservation(seatReservation);
         }
 
         SeatReservation newReservation = new SeatReservation(command.userId, concertSchedule, seat);
         var result = concertRepository.saveSeatReservation(newReservation);
-        System.out.println("예약성공 : id =  " + result.getId() + ", userId = " + result.getUserId());
         return result;
     }
 
     // 예약중인 좌석 조회
+    @Transactional
     public SeatReservation getReservedSeat(ConcertCommand.GetSeatReservation command) throws Exception {
         LocalDateTime now = LocalDateTime.now();
 
@@ -69,6 +72,7 @@ public class ConcertService {
     }
 
     // 예약된 좌석 전체 조회
+    @Transactional
     public List<SeatReservation> getReservedSeats() throws Exception {
         List<SeatReservation> seatReservation = concertRepository.getReservedSeats();
         return seatReservation;
