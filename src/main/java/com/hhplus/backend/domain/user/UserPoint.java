@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserPoint {
 
-    @Version
-    private long version;
-
     @Getter
     private Long id;
 

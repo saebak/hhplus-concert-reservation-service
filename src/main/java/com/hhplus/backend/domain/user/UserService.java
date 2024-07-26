@@ -31,10 +31,6 @@ public class UserService {
     // 포인트 충전
     @Transactional
     public UserPoint chargePoint(long userId, int amount) throws Exception {
-        User user = userRepository.getUser(userId);
-        if (user == null) {
-            throw new NotFoundException("사용자가 존재하지 않습니다.");
-        }
         UserPoint userPoint = getUserPoint(userId);
         userPoint.plusPoint(amount);
 
@@ -45,10 +41,6 @@ public class UserService {
     // 포인트 사용
     @Transactional
     public UserPoint usePoint(long userId, int usePoint) throws Exception {
-        User user = userRepository.getUser(userId);
-        if (user == null) {
-            throw new NotFoundException("사용자가 존재하지 않습니다.");
-        }
         UserPoint userPoint = getUserPoint(userId);
         userPoint.minusPoint(usePoint);
 
