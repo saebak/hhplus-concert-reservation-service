@@ -14,6 +14,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicLong;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
+@Slf4j
 @SpringBootTest
 @DisplayName("결제 통합 테스트")
 public class PaymentServiceIntegrationTest {
@@ -36,16 +38,17 @@ public class PaymentServiceIntegrationTest {
     @BeforeEach
     void before() throws Exception {
         userService.chargePoint(1, 50000);
-        System.out.println("사용자 포인트 충전 성공 : " + userService.getUserPoint(1).toString());
+        log.info("사용자 포인트 충전 성공 : {} ", userService.getUserPoint(1).toString());
         ConcertCommand.GetSeatReservation command = new ConcertCommand.GetSeatReservation(1L, 1L, 5L, 1L);
         SeatReservation seatReservation = concertService.reserveSeat(command);
-        System.out.println("좌석 예약 성공 : " + seatReservation.toString());
+        log.info("좌석 예약 성공 : {}", seatReservation.toString());
     }
 
     @Test
     @DisplayName("동시에 결제버튼을 여러번 눌렀을 경우 테스트 - 낙관적락 테스트")
     public void payPointTest() throws InterruptedException {
         // given
+        Thread.sleep(1000); //BeforeEach 도는 시간 기다림
         int threadCnt = 10;
         ExecutorService executorService = Executors.newFixedThreadPool(threadCnt);  // 고정된 스레드 풀을 생성하여 여러 스레드에서 작업을 실행
         CountDownLatch latch = new CountDownLatch(threadCnt);                       // 모든 스레드가 작업 완료할때 까지 대기
@@ -54,23 +57,27 @@ public class PaymentServiceIntegrationTest {
         AtomicLong sucessCnt = new AtomicLong();        // 성공한 결과값
         AtomicLong failCount = new AtomicLong();       // 실패한 수
 
+        Long startTime = System.currentTimeMillis();
+
         for (int i=1; i<=threadCnt; i++) {
             executorService.submit(() -> {
                 try {
                     PaymentCommand.GetConcertSeatReservation command = new GetConcertSeatReservation(1L, 1l, 5L, 1L, 30000);
                     Payment payment = paymentService.pay(command);
-                    System.out.println("결제 성공 : " + payment.toString());
+                    log.info("결제 성공 : " + payment.toString());
                     sucessCnt.getAndIncrement();
                 } catch (NotEnoughPointException e) {
                     System.out.println(e.getMessage());
                     failCount.getAndIncrement();
                 } catch (ObjectOptimisticLockingFailureException e) {
-                    //log.error("[쓰레드ID : {}] ObjectOptimisticLockingFailureException :: {}", Thread.currentThread().getId() , e.getMessage());
-                    System.out.println("[쓰레드ID : "+ Thread.currentThread().getId() +"] ObjectOptimisticLockingFailureException :: {"+ e.getMessage()+"}");
+                    log.error("[쓰레드ID : {}] ObjectOptimisticLockingFailureException :: {}", Thread.currentThread().getId() , e.getMessage());
                     failCount.getAndIncrement();
                 } catch (Exception e) {
+                    log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId() , e.getMessage());
                     failCount.getAndIncrement();
                 } finally {
+                    Long endTime = System.currentTimeMillis();
+                    log.info("소요 시간: {}", (endTime - startTime) + "ms");
                     latch.countDown();
                 }
             });
@@ -79,8 +86,6 @@ public class PaymentServiceIntegrationTest {
         executorService.shutdown();     // thread풀 종료
 
         UserPoint userPoint = userService.getUserPoint(1);
-        System.out.println("현재 버전 : " + userPoint.getVersion());
-        //long resultPoint = sucessPoint.get();
         long success = sucessCnt.get();
         long fail = failCount.get();
         // then

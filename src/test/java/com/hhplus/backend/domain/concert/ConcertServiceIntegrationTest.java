@@ -1,8 +1,8 @@
 package com.hhplus.backend.domain.concert;
 
 import com.hhplus.backend.domain.exception.AlreadyReservedSeatException;
-import com.hhplus.backend.domain.user.UserPoint;
 import java.util.concurrent.atomic.AtomicLong;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
 @SpringBootTest
 @DisplayName("좌석 점유 및 동시성 통합 테스트")
 public class ConcertServiceIntegrationTest {
@@ -34,6 +35,8 @@ public class ConcertServiceIntegrationTest {
         AtomicInteger failCnt = new AtomicInteger();
         AtomicInteger successCnt = new AtomicInteger();
 
+        Long startTime = System.currentTimeMillis();
+
         // when
         for (int i=1; i<=threadCnt; i++) {
             long finalI = i;
@@ -43,11 +46,14 @@ public class ConcertServiceIntegrationTest {
                     concertService.reserveSeat(command);
                     successCnt.getAndIncrement();
                 } catch (AlreadyReservedSeatException e) {
+                    log.error("[쓰레드ID : {}] AlreadyReservedSeatException :: {}", Thread.currentThread().getId(), e.getMessage());
                     failCnt.getAndIncrement();
                 } catch (Exception e) {
-                    //throw new RuntimeException(e);
+                    log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), e.getMessage());
                     failCnt.getAndIncrement();
                 } finally {
+                    Long endTime = System.currentTimeMillis();
+                    log.info("소요 시간: {}", (endTime - startTime) + "ms");
                     latch.countDown();
                 }
             });
@@ -74,8 +80,7 @@ public class ConcertServiceIntegrationTest {
         AtomicInteger failCnt = new AtomicInteger();
         AtomicInteger successCnt = new AtomicInteger();
 
-        // 각 스레드별로 걸린 시간을 저장할 배열
-        long[] threadTimes = new long[threadCnt];
+        Long startTime = System.currentTimeMillis();
 
         for (int i=1; i<=threadCnt; i++) {
             long finalI = i;
@@ -86,16 +91,14 @@ public class ConcertServiceIntegrationTest {
                     concertService.reserveSeat(command);
                     successCnt.getAndIncrement();
                 } catch (AlreadyReservedSeatException e) {
-                    System.out.println(e.getMessage());
+                    log.error("[쓰레드ID : {}] AlreadyReservedSeatException :: {}", Thread.currentThread().getId(), e.getMessage());
                     failCnt.getAndIncrement();
                 } catch (Exception e) {
-                    //throw new RuntimeException(e);
-                    System.out.println(e.getMessage());
+                    log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), e.getMessage());
                     failCnt.getAndIncrement();
                 } finally {
-                    long threadEndTime = System.currentTimeMillis();
-                    threadTimes[(int) finalI-1] = threadEndTime - threadStartTime;
-                    System.out.println("걸린 시간 : " + threadTimes[(int) finalI -1]);
+                    Long endTime = System.currentTimeMillis();
+                    log.info("소요 시간: {}", (endTime - startTime) + "ms");
                     latch.countDown();
                 }
             });
@@ -132,27 +135,23 @@ public class ConcertServiceIntegrationTest {
             executorService.submit(() -> {
                 try {
                     ConcertCommand.GetSeatReservation command = new ConcertCommand.GetSeatReservation(1L, 1L, 5L, finalI);
-                    SeatReservation seatReservation = concertService.reserveSeat(command);
+                    concertService.reserveSeat(command);
                     sucessCnt.getAndIncrement();
                 } catch (ObjectOptimisticLockingFailureException e) {
-                    //log.error("[쓰레드ID : {}] ObjectOptimisticLockingFailureException :: {}", Thread.currentThread().getId() , e.getMessage());
-                    System.out.println("[쓰레드ID : "+ Thread.currentThread().getId() +"] ObjectOptimisticLockingFailureException :: {"+ e.getMessage()+"}");
+                    log.error("[쓰레드ID : {}] ObjectOptimisticLockingFailureException :: {}", Thread.currentThread().getId() , e.getMessage());
                     failCount.getAndIncrement();
                 } catch (Exception ex) {
-                    //log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), ex.getMessage());
-                    System.out.println("[쓰레드ID : "+ Thread.currentThread().getId() +"] Exception :: {"+ ex.getMessage()+"}");
+                    log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), ex.getMessage());
                     failCount.getAndIncrement();
                 } finally {
+                    Long endTime = System.currentTimeMillis();
+                    log.info("소요 시간: {}", (endTime - startTime) + "ms");
                     latch.countDown();
                 }
             });
         }
         latch.await(); // 모든 스레드가 완료될 때까지 대기
         executorService.shutdown(); //쓰레드 풀 종료
-
-        Long endTime = System.currentTimeMillis();
-//        log.info("소요 시간: {}", (endTime - startTime) + "ms");
-        System.out.println("소요 시간: " + (endTime - startTime) + "ms");
 
         // then
         List<SeatReservation> seatReservations = concertService.getReservedSeats();

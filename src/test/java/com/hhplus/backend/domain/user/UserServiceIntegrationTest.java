@@ -1,6 +1,7 @@
 package com.hhplus.backend.domain.user;
 
 import jakarta.persistence.OptimisticLockException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+@Slf4j
 @SpringBootTest
 @DisplayName("유저 포인트 통합 테스트")
 public class UserServiceIntegrationTest {
@@ -32,18 +34,23 @@ public class UserServiceIntegrationTest {
         AtomicLong sucessCnt = new AtomicLong();        // 성공한 결과값
         AtomicLong failCount = new AtomicLong();       // 실패한 수
 
+        Long startTime = System.currentTimeMillis();
+
         for (int i=1; i<=threadCnt; i++) {
             executorService.submit(() -> {      // 각 thread가 chargePoint를 호출
                 try {
                     long id = 1;
                     int addPoint = 10000;
                     UserPoint userPoint = userService.chargePoint(id, addPoint);        // 10000p씩 충전
-                    System.out.println("충전 성공 : " + userPoint.getPoint());
+                    log.info("충전 성공 : {}", userPoint.getPoint());
                     sucessPoint.set(userPoint.getPoint());                           // 충전후 결과값
                     sucessCnt.getAndIncrement();
                 } catch (Exception e) {
+                    log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), e.getMessage());
                     failCount.getAndIncrement();
                 } finally {
+                    Long endTime = System.currentTimeMillis();
+                    log.info("소요 시간: {}", (endTime - startTime) + "ms");
                     latch.countDown();
                 }
             });
@@ -72,18 +79,23 @@ public class UserServiceIntegrationTest {
         AtomicLong sucessCnt = new AtomicLong();        // 성공한 결과값
         AtomicLong failCount = new AtomicLong();       // 실패한 수
 
+        Long startTime = System.currentTimeMillis();
+
         for (int i=1; i<=threadCnt; i++) {
             executorService.submit(() -> {      // 각 thread가 chargePoint를 호출
                 try {
                     long id = 1;
                     int addPoint = 10000;
                     UserPoint userPoint = userService.chargePoint(id, addPoint);        // 10000p씩 충전
-                    System.out.println("충전 성공 : " + userPoint.getPoint());
+                    log.info("충전 성공 : {}", userPoint.getPoint());
                     sucessPoint.set(userPoint.getPoint());                           // 충전후 결과값
                     sucessCnt.getAndIncrement();
                 } catch (Exception e) {
+                    log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), e.getMessage());
                     failCount.getAndIncrement();
                 } finally {
+                    Long endTime = System.currentTimeMillis();
+                    log.info("소요 시간: {}", (endTime - startTime) + "ms");
                     latch.countDown();
                 }
             });
@@ -122,24 +134,20 @@ public class UserServiceIntegrationTest {
                     sucessPoint.set(userPoint.getPoint());
                     sucessCnt.getAndIncrement();
                 } catch (ObjectOptimisticLockingFailureException e) {
-                    //log.error("[쓰레드ID : {}] ObjectOptimisticLockingFailureException :: {}", Thread.currentThread().getId() , e.getMessage());
-                    System.out.println("[쓰레드ID : "+ Thread.currentThread().getId() +"] ObjectOptimisticLockingFailureException :: {"+ e.getMessage()+"}");
+                    log.error("[쓰레드ID : {}] ObjectOptimisticLockingFailureException :: {}", Thread.currentThread().getId() , e.getMessage());
                     failCount.getAndIncrement();
                 } catch (Exception ex) {
-                    //log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), ex.getMessage());
-                    System.out.println("[쓰레드ID : "+ Thread.currentThread().getId() +"] Exception :: {"+ ex.getMessage()+"}");
+                    log.error("[쓰레드ID : {}] Exception :: {}", Thread.currentThread().getId(), ex.getMessage());
                     failCount.getAndIncrement();
                 } finally {
+                    Long endTime = System.currentTimeMillis();
+                    log.info("소요 시간: {}", (endTime - startTime) + "ms");
                     latch.countDown();
                 }
             });
         }
         latch.await(); // 모든 스레드가 완료될 때까지 대기
         executorService.shutdown(); //쓰레드 풀 종료
-
-        Long endTime = System.currentTimeMillis();
-//        log.info("소요 시간: {}", (endTime - startTime) + "ms");
-        System.out.println("소요 시간: " + (endTime - startTime) + "ms");
 
         // then
         long resultPoint = sucessPoint.get();
