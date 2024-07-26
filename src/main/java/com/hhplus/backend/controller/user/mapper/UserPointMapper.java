@@ -1,8 +1,6 @@
 package com.hhplus.backend.controller.user.mapper;
 
-import com.hhplus.backend.domain.user.User;
 import com.hhplus.backend.domain.user.UserPoint;
-import com.hhplus.backend.infra.user.entity.UserEntity;
 import com.hhplus.backend.infra.user.entity.UserPointEntity;
 
 public class UserPointMapper {
@@ -19,6 +17,7 @@ public class UserPointMapper {
                 .point(entity.getPoint())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
+                .version(entity.getVersion())
                 .build();
     }
 
@@ -35,6 +34,7 @@ public class UserPointMapper {
         entity.setPoint(domain.getPoint());
         entity.setCreatedAt(domain.getCreatedAt());
         entity.setUpdatedAt(domain.getUpdatedAt());
+        entity.setVersion(domain.getVersion());
         return entity;
     }
 }

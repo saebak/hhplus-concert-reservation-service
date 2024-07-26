@@ -14,7 +14,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
-@DisplayName("좌석 점유 및 동시성 통합 테스트")
+@DisplayName("유저 포인트 통합 테스트")
 public class UserServiceIntegrationTest {
 
     @Autowired

@@ -19,6 +19,7 @@ public class UserService {
     }
 
     // 포인트 조회
+    @Transactional
     public UserPoint getUserPoint(long userId) {
         User user = userRepository.getUser(userId);
         if (user == null) {

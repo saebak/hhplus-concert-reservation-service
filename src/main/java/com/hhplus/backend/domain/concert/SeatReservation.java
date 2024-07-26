@@ -57,6 +57,6 @@ public class SeatReservation {
         // 해당 좌석이 지금 요청한 사용자가 예약한 좌석인가?
         if (this.userId != userId) throw new BadRequestException("예약자가 일치하지 않습니다.");
         // 예약 시간 검증
-        if (this.createdAt.isAfter(now.plusMinutes(5))) throw new Exception("예약 요청 시간이 만료되었습니다.");
+        if (this.createdAt.isBefore(now.minusMinutes(5))) throw new Exception("예약 요청 시간이 만료되었습니다.");
     }
 }

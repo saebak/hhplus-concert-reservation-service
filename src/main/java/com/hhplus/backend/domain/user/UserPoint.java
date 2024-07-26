@@ -29,10 +29,20 @@ public class UserPoint {
     @Getter
     public LocalDateTime updatedAt;
 
+    @Getter
+    public Long version;
+
     public UserPoint (Long id, Long userId, int point) {
         this.id = id;
         this.userId = userId;
         this.point = point;
+    }
+
+    public UserPoint (Long id, Long userId, int point, long version) {
+        this.id = id;
+        this.userId = userId;
+        this.point = point;
+        this.version = version;
     }
 
     public void plusPoint(int addPoint) {
