@@ -31,4 +31,7 @@ public class UserPointEntity {
     @Column(name="UPDATED_AT")
     private LocalDateTime updatedAt;
 
+    @Version
+    private long version;
+
 }

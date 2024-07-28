@@ -30,4 +30,6 @@ public interface ConcertRepository {
     
     // 예약한 좌석 조회
     SeatReservation getReservedSeat(Long concertId, Long scheduleId, Long seatId, Long userId);
+
+    List<SeatReservation> getReservedSeats();
 }

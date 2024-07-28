@@ -26,10 +26,10 @@ public class SeatReservationEntity {
     @Column(name="SCHEDULE_ID")
     private Long scheduleId;
 
-    @Column(name="SEAT_ID", unique = true)
+    @Column(name="SEAT_ID")
     private Long seatId;
 
-    @Column(name="STATUS", unique = true)
+    @Column(name="STATUS")
     private String status;
 
     @CreatedDate
@@ -39,5 +39,8 @@ public class SeatReservationEntity {
     @LastModifiedDate
     @Column(name="UPDATED_AT")
     private LocalDateTime updatedAt;
+
+    @Version
+    private Long version;
 
 }
