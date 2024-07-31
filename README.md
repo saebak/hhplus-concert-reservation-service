@@ -1,5 +1,8 @@
 # 콘서트 좌석 예약 서비스
 
+### Redis caching 사용해서 조회 성능 높이기 👇👇
+[Redis caching으로 대용량 트래픽 처리하기](https://velog.io/@saebak/Redis-cache%EB%A1%9C-%ED%8A%B8%EB%9E%98%ED%94%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0)
+
 ### 동시성 문제해결하기 👇👇
 [좌석 예약 서비스에서 발생할 수 있는 동시성 문제와 해결](https://velog.io/@saebak/%EB%8F%99%EC%8B%9C%EC%84%B1%EB%AC%B8%EC%A0%9C%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0)
 
