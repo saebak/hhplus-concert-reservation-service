@@ -8,11 +8,21 @@ public class ConcertCommand {
     public static class GetConcertSchedules {
 
         public Long concertId;
+
+        @Override
+        public String toString() {
+            return "CC" + concertId;
+        }
     }
 
     public static class GetConcertSeats {
 
         public Long scheduleId;
+
+        @Override
+        public String toString() {
+            return "CS" + scheduleId;
+        }
     }
 
     @AllArgsConstructor

@@ -1,17 +1,18 @@
 package com.hhplus.backend.domain.concert;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import org.apache.coyote.BadRequestException;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class ConcertSchedule {
+@NoArgsConstructor
+public class ConcertSchedule implements Serializable {
+
+    private static final long serialVersionUID = 23490324893240L;
 
     @Getter
     private Long id;

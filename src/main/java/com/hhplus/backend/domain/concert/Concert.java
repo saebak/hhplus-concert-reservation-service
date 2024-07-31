@@ -1,14 +1,16 @@
 package com.hhplus.backend.domain.concert;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class Concert {
+@NoArgsConstructor
+public class Concert implements Serializable {
+
+    private static final long serialVersionUID = 123124312394329421L;
 
     @Getter
     private Long id;
