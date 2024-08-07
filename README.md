@@ -1,5 +1,8 @@
 # 콘서트 좌석 예약 서비스
 
+### 트랜잭션 범위와 관심사 분리 👇👇
+[미완성](https://velog.io/@saebak/MSA%EC%84%9C%EB%B9%84%EC%8A%A4%EB%B6%84%EB%A6%AC)
+
 ### DB 테이블 Index로 쿼리 성능 개선해보기 👇👇
 [DB 테이블 Index로 쿼리 성능 개선해보기](https://velog.io/@saebak/DB%EC%BF%BC%EB%A6%AC%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0)
 
