@@ -2,37 +2,55 @@ package com.hhplus.backend.domain.concert;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hhplus.backend.domain.exception.NotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class ConcertService {
 
     @Autowired
     private ConcertRepository concertRepository;
 
+    @Autowired
+    private CacheManager cacheManager;
+
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public ConcertService(ObjectMapper objectMapper) {
+        // ObjectMapper가 Spring에 의해 주입됩니다.
+        this.objectMapper = objectMapper;
+    }
+    
+    // 콘서트 목록 조회
+    @Cacheable(value = "concerts", cacheManager = "cacheManager")
     public List<Concert> getConcerts() {
         List<Concert> concerts = concertRepository.findAll();
         return concerts;
     }
 
     // 콘서트 예약 가능 날짜 조회
+    @Cacheable(key = "#command.toString()", value = "schedules", cacheManager = "cacheManager")
     public List<ConcertSchedule> getConcertSchedules(ConcertCommand.GetConcertSchedules command) {
         List<ConcertSchedule> schedules = concertRepository.getConcertSchedules(command.concertId);
         return schedules;
     }
     
     // 콘서트 좌석 조회
+    @Cacheable(key = "#command.toString()", value = "seats", cacheManager = "cacheManager")
     public List<ConcertSeat> getConcertSeats(ConcertCommand.GetConcertSeats command) {
         List<ConcertSeat> seats = concertRepository.getConcertSeats(command.scheduleId);
-        // 여기서 예약된 좌석은 제외하는 로직을 추가...해야할것같은데
-
         return seats;
     }
 
@@ -58,6 +76,7 @@ public class ConcertService {
 
         SeatReservation newReservation = new SeatReservation(command.userId, concertSchedule, seat);
         var result = concertRepository.saveSeatReservation(newReservation);
+        ////////////////////////////////////
         return result;
     }
 

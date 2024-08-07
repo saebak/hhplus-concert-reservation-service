@@ -27,14 +27,21 @@ public class AuthTokenInterceptor implements HandlerInterceptor {
         // 토큰 검증
         //Long userId = Long.valueOf(request.getSession().getId());
         long userId = 1; // 임의로 값 설정
-        UserToken userToken = queueService.getToken(userId);
-
-        if (!userToken.isActive()) {
-            NotActivateTokenException e = new NotActivateTokenException("Not activate token");
-            log.warn(e.getMessage());
+//        UserToken userToken = queueService.getToken(userId);
+//
+//        if (!userToken.isActive()) {
+//            NotActivateTokenException e = new NotActivateTokenException("Not activate token");
+//            log.warn(e.getMessage());
+//            return false;
+//        };
+        
+        // redis로 변경
+        long active = queueService.getActiveToken(userId);
+        if (active < 0) {
+            long waitingNo = queueService.getWaitingToken(userId);
+            log.info("현재 대기번호는 " + waitingNo + "번 입니다.");
             return false;
-        };
-
+        }
         return true;
     }
 

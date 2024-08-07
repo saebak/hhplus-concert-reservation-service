@@ -11,15 +11,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class QueueScheduler {
 
+    private final Long ACTIVE_TOKEN_COUNT = 5L;
+
     private final QueueService queueService;
-
-    @Scheduled(fixedDelay = 10000)
+    
+    // 3분마다 5명씩 대기열 통과
+    @Scheduled(fixedDelay = 300000)
     public void runUpdateActivateTokens () {
-        queueService.activateTokens();
+        queueService.transferToken(0, ACTIVE_TOKEN_COUNT);
     }
 
-    @Scheduled(fixedDelay = 10000)
-    public void runUpdateExpireTokens () {
-        queueService.expireTokens();
-    }
 }

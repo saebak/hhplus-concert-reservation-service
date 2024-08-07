@@ -1,9 +1,12 @@
 package com.hhplus.backend.domain.queue;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
-import com.hhplus.backend.domain.user.User;
+import io.netty.util.internal.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +16,8 @@ public class QueueService {
 
     @Autowired
     private QueueRepository queueRepository;
+    @Autowired
+    private RedisTokenRepository redisTokenRepository;
 
     /**
      * 토큰 조회
@@ -73,4 +78,44 @@ public class QueueService {
         int result = queueRepository.saveAll(activeTokens);
     }
 
+    // 토큰 발행
+    public long issueTokenRedis(long userId) throws Exception {
+        long now = parseDate(LocalDateTime.now());
+        //String uuid = UUID.randomUUID().toString();
+        boolean result = redisTokenRepository.setWaitingToken(userId, now);   // 토큰 발급
+        if (!result) {
+            throw new Exception("토큰 발급도중 오류가 발생했습니다.");
+        }
+        return redisTokenRepository.getWaitingNo(userId);    // 대기번호 반환
+    }
+
+    // access token 조회
+    public long getActiveToken(long userId) {
+        long activeToken = redisTokenRepository.getActiveToken(userId);
+        return activeToken;
+    }
+    
+    // waiting token 조회
+    public long getWaitingToken(long userId) {
+        long waitingNo = redisTokenRepository.getWaitingNo(userId);
+        return waitingNo;
+    }
+
+    // 순차적으로 waiting token active token 으로 변환
+    public void transferToken(long start, long end) {
+        Set<Object> values =  redisTokenRepository.getTransferWaitingToken(start, end); // 대기->활성화시킬 토큰 값 조회 
+        if (values != null) {
+            for (Object value : values) {
+                long now = parseDate(LocalDateTime.now());
+                //String uuid = UUID.randomUUID().toString();
+                redisTokenRepository.setActiveToken((Long)value, now);    // active 토큰 등록
+            }
+        }
+        redisTokenRepository.popWaitingToken(start,end);     // 활성화 시킨 토큰 삭제
+    }
+
+    private long parseDate(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+        return Long.parseLong(dateTime.format(formatter));
+    }
 }

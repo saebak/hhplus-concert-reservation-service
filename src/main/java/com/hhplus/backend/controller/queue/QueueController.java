@@ -24,19 +24,10 @@ public class QueueController {
      * @return
      */
     @PostMapping("/create")
-    public ResponseEntity<UserToken> createToken(@RequestBody Long userId) {
-        UserToken userToken = queueService.issueToken(userId);
-        return ResponseEntity.ok().body(userToken);
+    public ResponseEntity<Long> createToken(@RequestBody Long userId) throws Exception {
+        //UserToken userToken = queueService.issueToken(userId);
+        long waitingNo = queueService.issueTokenRedis(userId);
+        return ResponseEntity.ok().body(waitingNo);
     }
 
-    /**
-     * 사용자 대기열 토큰 만료 (직접 api를 호출할 일이 없을 것 같은데 굳이 필요한가..?)
-     * @param input
-     * @return
-     */
-//    @PostMapping("/expired")
-//    public ResponseEntity<UserToken> expiredToken(@RequestBody Map<String, Long> input) {
-//        UserToken userToken = queueService.expireTokens();
-//        return userToken;
-//    }
 }
