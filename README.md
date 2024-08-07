@@ -1,5 +1,8 @@
 # 콘서트 좌석 예약 서비스
 
+### DB 테이블 Index로 쿼리 성능 개선해보기 👇👇
+[DB 테이블 Index로 쿼리 성능 개선해보기](https://velog.io/@saebak/DB%EC%BF%BC%EB%A6%AC%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0)
+
 ### Redis caching 사용해서 조회 성능 높이기 👇👇
 [Redis caching으로 대용량 트래픽 처리하기](https://velog.io/@saebak/Redis-cache%EB%A1%9C-%ED%8A%B8%EB%9E%98%ED%94%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0)
 
