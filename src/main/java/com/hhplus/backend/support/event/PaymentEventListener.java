@@ -29,10 +29,8 @@ public class PaymentEventListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void paymentSuccessHandler(PaymentSuccessEvent event) throws Exception {
 
-        PaymentPayload payload = new PaymentPayload(event);
-
         // kafka에 message 등록
-        kafkaProducer.publishPaymentInfo(payload);
+        kafkaProducer.publishPaymentInfo(event);
 
         // 기존 event listener 방식
 //        PaymentPayload payload = new PaymentPayload(event);

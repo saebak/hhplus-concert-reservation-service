@@ -1,10 +1,12 @@
 package com.hhplus.backend.support.event;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor(force = true)
 public class PaymentSuccessEvent {
     private final Long paymentId;
     private final Long userId;

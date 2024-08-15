@@ -1,5 +1,6 @@
 package com.hhplus.backend.domain.payment;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hhplus.backend.domain.concert.ConcertRepository;
 import com.hhplus.backend.domain.concert.SeatReservation;
 import com.hhplus.backend.domain.user.UserPoint;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -51,13 +53,15 @@ public class PaymentService {
         info.setCreatedAt(LocalDateTime.now());
         Payment payment = paymentRepository.savePayment(info);
 
+        PaymentSuccessEvent paymentSuccessEvent = new PaymentSuccessEvent(payment.getId(),payment.getUserId(),payment.getPrice(),payment.getStatus(),payment.getCreatedAt());
+
         // outbox 저장
         // type은 나중에 enum으로 리팩토링
-        PaymentOutbox outbox = new PaymentOutbox(payment.getId(), "PAYMENT_INFO_RECEIVED",  EventType.INIT.getResultMessage(), payment.toString());
+        PaymentOutbox outbox = new PaymentOutbox(payment.getId(), "paymentEvent",  EventType.RECEIVED.getResultMessage(), paymentSuccessEvent);
         paymentRepository.savePaymentOutbox(outbox);
 
         // 결제 정보 전송 이벤트
-        paymentEventPublisher.success(new PaymentSuccessEvent(payment.getId(),payment.getUserId(),payment.getPrice(),payment.getStatus(),payment.getCreatedAt()));
+        paymentEventPublisher.publish(paymentSuccessEvent);
     }
 
     // 결제 요청 - 결제정보저장 event 추가
@@ -115,6 +119,18 @@ public class PaymentService {
 
         Payment payment = paymentRepository.savePayment(info);
         return payment;
+    }
+    
+    // outbox 에서 status가 init인 정보 list 조회
+    public List<PaymentOutbox> getPaymentOutboxsByStatusInit(String aggregateType, String status) throws JsonProcessingException {
+        List<PaymentOutbox> outboxList = paymentRepository.getPaymentOutboxsStatusInit(aggregateType, status);
+        return outboxList;
+    }
+
+    // outbox list 조회
+    public List<PaymentOutbox> getPaymentOutboxs() throws JsonProcessingException {
+        List<PaymentOutbox> outboxList = paymentRepository.getPaymentOutboxs();
+        return outboxList;
     }
 
     // 결제 취소 로직 필요할듯...?
