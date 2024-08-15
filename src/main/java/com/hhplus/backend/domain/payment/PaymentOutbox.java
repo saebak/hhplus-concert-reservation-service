@@ -1,6 +1,7 @@
 package com.hhplus.backend.domain.payment;
 
 import com.hhplus.backend.domain.concert.SeatReservation;
+import com.hhplus.backend.support.event.PaymentSuccessEvent;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -8,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Lob;
 import java.time.LocalDateTime;
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +32,7 @@ public class PaymentOutbox {
 
     private String eventType;
 
-    @Lob
-    private String payload;
+    private PaymentSuccessEvent payload;
 
     private LocalDateTime createdAt;
 
@@ -40,7 +42,7 @@ public class PaymentOutbox {
 
     private Long retryCount;
 
-    public PaymentOutbox(Long aggregateId, String aggregateType, String eventType, String payload) {
+    public PaymentOutbox(Long aggregateId, String aggregateType, String eventType, PaymentSuccessEvent payload) {
         this.aggregateId = aggregateId;
         this.aggregateType = aggregateType;
         this.eventType = eventType;

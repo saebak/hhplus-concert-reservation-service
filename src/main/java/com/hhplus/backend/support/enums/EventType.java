@@ -6,7 +6,8 @@ import java.util.Map;
 
 public enum EventType {
     INIT            (10,  "INIT"),
-    RECEIVED        (20, "RECEIVED ")
+    RECEIVED        (20, "RECEIVED"),
+    SUCCESS         (30, "SUCCESS")
     ;
 
     private int resultCode;
