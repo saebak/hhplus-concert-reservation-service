@@ -18,7 +18,7 @@ public class PaymentApiClientConsumer {
         this.paymentApiClient = paymentApiClient;
     }
 
-    @KafkaListener(topics = "paymentEvent", groupId = "payment", containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(topics = "paymentEvent", groupId = "paymentApiclient")
     public void listener(String data) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         PaymentSuccessEvent event = mapper.readValue(data, PaymentSuccessEvent.class);

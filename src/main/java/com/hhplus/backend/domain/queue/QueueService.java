@@ -115,6 +115,11 @@ public class QueueService {
         }
     }
 
+    // 결제가 완료된 사용자의 access 토큰 만료
+    public void expiredRedisToken(long userId) {
+        redisTokenRepository.popActiveToken(userId); // access_token 에서 토큰 삭제
+    }
+
     private long parseDate(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
         return Long.parseLong(dateTime.format(formatter));

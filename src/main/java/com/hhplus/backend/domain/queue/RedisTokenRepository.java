@@ -15,4 +15,6 @@ public interface RedisTokenRepository {
     void setActiveToken(long userId, long now);
 
     long getActiveToken(long userId);
+
+    void popActiveToken(long userId);
 }

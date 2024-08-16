@@ -24,6 +24,7 @@ public class KafkaProducer {
     }
 
     public void publishPaymentInfo(PaymentSuccessEvent event) throws JsonProcessingException {
+        log.info("Produce message : {}", event);
         kafkaTemplate.send("paymentEvent", objectMapper.writeValueAsString(event));
     }
 }

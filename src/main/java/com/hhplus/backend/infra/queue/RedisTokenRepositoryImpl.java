@@ -52,4 +52,9 @@ public class RedisTokenRepositoryImpl implements RedisTokenRepository {
         activeToken =  (long) redisTemplate.opsForValue().get("ACTIVE_TOKEN:"+userId);
         return activeToken;
     }
+
+    @Override
+    public void popActiveToken(long userId) {
+        redisTemplate.opsForZSet().remove("ACTIVE_TOKEN:"+userId);
+    }
 }
