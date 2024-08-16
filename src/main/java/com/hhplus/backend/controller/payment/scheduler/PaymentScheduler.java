@@ -29,7 +29,7 @@ public class PaymentScheduler {
     public void runUpdatePaymentEvent() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String aggregateType = "paymentEvent";
-        List<PaymentOutbox> paymentOutboxs = paymentService.getPaymentOutboxsByStatusInit(aggregateType, "INIT");    // 쿼리로 시간 비교 , 실무에선 페이지네이션 필요(데이터 많으니깐)
+        List<PaymentOutbox> paymentOutboxs = paymentService.getPaymentOutboxsByStatus(aggregateType, "INIT");    // 쿼리로 시간 비교 , 실무에선 페이지네이션 필요(데이터 많으니깐)
         for (PaymentOutbox paymentOutbox : paymentOutboxs) {
             PaymentPayload payload = new PaymentPayload(paymentOutbox.getPayload());
             paymentApiClient.sendPaymentInfo(payload);

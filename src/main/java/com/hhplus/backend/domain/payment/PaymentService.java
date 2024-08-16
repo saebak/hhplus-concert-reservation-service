@@ -3,6 +3,7 @@ package com.hhplus.backend.domain.payment;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hhplus.backend.domain.concert.ConcertRepository;
 import com.hhplus.backend.domain.concert.SeatReservation;
+import com.hhplus.backend.domain.queue.RedisTokenRepository;
 import com.hhplus.backend.domain.user.UserPoint;
 import com.hhplus.backend.domain.user.UserRepository;
 import com.hhplus.backend.support.enums.EventType;
@@ -26,6 +27,9 @@ public class PaymentService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RedisTokenRepository redisTokenRepository;
 
     @Autowired
     private PaymentEventPublisher paymentEventPublisher;
@@ -62,6 +66,9 @@ public class PaymentService {
 
         // 결제 정보 전송 이벤트
         paymentEventPublisher.publish(paymentSuccessEvent);
+        
+        // 결제 완료 후 active 토큰 삭제
+        redisTokenRepository.popActiveToken(payment.getUserId());
     }
 
     // 결제 요청 - 결제정보저장 event 추가
@@ -89,6 +96,9 @@ public class PaymentService {
 
         // 결제 정보 전송 이벤트
         paymentEventPublisher.success(new PaymentSuccessEvent(payment.getId(),payment.getUserId(),payment.getPrice(),payment.getStatus(),payment.getCreatedAt()));
+
+        // 결제 완료 후 active 토큰 삭제
+        redisTokenRepository.popActiveToken(payment.getUserId());
     }
     
     // 결제 요청
@@ -122,7 +132,7 @@ public class PaymentService {
     }
     
     // outbox 에서 status가 init인 정보 list 조회
-    public List<PaymentOutbox> getPaymentOutboxsByStatusInit(String aggregateType, String status) throws JsonProcessingException {
+    public List<PaymentOutbox> getPaymentOutboxsByStatus(String aggregateType, String status) throws JsonProcessingException {
         List<PaymentOutbox> outboxList = paymentRepository.getPaymentOutboxsStatusInit(aggregateType, status);
         return outboxList;
     }
