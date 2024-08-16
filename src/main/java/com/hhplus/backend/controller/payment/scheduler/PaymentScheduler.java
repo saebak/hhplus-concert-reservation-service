@@ -31,6 +31,8 @@ public class PaymentScheduler {
         String aggregateType = "paymentEvent";
         List<PaymentOutbox> paymentOutboxs = paymentService.getPaymentOutboxsByStatus(aggregateType, "INIT");    // 쿼리로 시간 비교 , 실무에선 페이지네이션 필요(데이터 많으니깐)
         for (PaymentOutbox paymentOutbox : paymentOutboxs) {
+            // message 발행 재시도 count + 1
+            paymentOutbox.plusRetryCount();
             PaymentPayload payload = new PaymentPayload(paymentOutbox.getPayload());
             paymentApiClient.sendPaymentInfo(payload);
             kafkaProducer.publishPaymentInfo(paymentOutbox.getPayload());

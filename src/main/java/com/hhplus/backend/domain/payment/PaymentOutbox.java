@@ -55,4 +55,8 @@ public class PaymentOutbox {
         this.status = "PUBLISHED";
         this.publishedAt = LocalDateTime.now();
     }
+
+    public void plusRetryCount() {
+        this.retryCount++;
+    }
 }
