@@ -43,4 +43,20 @@ public class Payment {
 
     @Getter
     private SeatReservation seatReservation;
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", concertId=" + concertId +
+                ", concertTitle='" + concertTitle + '\'' +
+                ", scheduleId=" + scheduleId +
+                ", seatId=" + seatId +
+                ", price=" + price +
+                ", status='" + status + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                "}";
+    }
 }

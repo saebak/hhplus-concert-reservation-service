@@ -1,6 +1,5 @@
 package com.hhplus.backend.infra.payment;
 
-import com.hhplus.backend.domain.payment.Payment;
 import com.hhplus.backend.infra.payment.entity.PaymentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 

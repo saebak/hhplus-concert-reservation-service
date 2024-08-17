@@ -108,10 +108,16 @@ public class QueueService {
             for (Object value : values) {
                 long now = parseDate(LocalDateTime.now());
                 //String uuid = UUID.randomUUID().toString();
-                redisTokenRepository.setActiveToken((Long)value, now);    // active 토큰 등록
+                String userId = value.toString().split(":")[1];
+                redisTokenRepository.setActiveToken(Long.valueOf(userId), now);    // active 토큰 등록
             }
+            redisTokenRepository.popWaitingToken(start,end);     // 활성화 시킨 토큰 삭제
         }
-        redisTokenRepository.popWaitingToken(start,end);     // 활성화 시킨 토큰 삭제
+    }
+
+    // 결제가 완료된 사용자의 access 토큰 만료
+    public void expiredRedisToken(long userId) {
+        redisTokenRepository.popActiveToken(userId); // access_token 에서 토큰 삭제
     }
 
     private long parseDate(LocalDateTime dateTime) {
