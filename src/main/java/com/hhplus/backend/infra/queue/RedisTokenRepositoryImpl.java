@@ -49,7 +49,10 @@ public class RedisTokenRepositoryImpl implements RedisTokenRepository {
     @Override
     public long getActiveToken(long userId) {
         long activeToken = -1;
-        activeToken =  (long) redisTemplate.opsForValue().get("ACTIVE_TOKEN:"+userId);
+
+        if (redisTemplate.opsForValue().get("ACTIVE_TOKEN:"+userId) != null) {
+            activeToken = 1;
+        };
         return activeToken;
     }
 

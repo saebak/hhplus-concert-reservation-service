@@ -41,14 +41,14 @@ public class ConcertService {
     }
 
     // 콘서트 예약 가능 날짜 조회
-    @Cacheable(key = "#command.toString()", value = "schedules", cacheManager = "cacheManager")
+    //@Cacheable(key = "#command.toString()", value = "schedules", cacheManager = "cacheManager")
     public List<ConcertSchedule> getConcertSchedules(ConcertCommand.GetConcertSchedules command) {
         List<ConcertSchedule> schedules = concertRepository.getConcertSchedules(command.concertId);
         return schedules;
     }
     
     // 콘서트 좌석 조회
-    @Cacheable(key = "#command.toString()", value = "seats", cacheManager = "cacheManager")
+   // @Cacheable(key = "#command.toString()", value = "seats", cacheManager = "cacheManager")
     public List<ConcertSeat> getConcertSeats(ConcertCommand.GetConcertSeats command) {
         List<ConcertSeat> seats = concertRepository.getConcertSeats(command.scheduleId);
         return seats;

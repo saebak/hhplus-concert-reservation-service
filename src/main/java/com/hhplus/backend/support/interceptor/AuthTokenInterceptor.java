@@ -35,13 +35,13 @@ public class AuthTokenInterceptor implements HandlerInterceptor {
 //            return false;
 //        };
         
-        // redis로 변경
-        long active = queueService.getActiveToken(userId);
-        if (active < 0) {
-            long waitingNo = queueService.getWaitingToken(userId);
-            log.info("현재 대기번호는 " + waitingNo + "번 입니다.");
-            return false;
-        }
+        // redis로 변경 - redis에서 가져온 값이 null 경우 null 체크 해줘야함
+//        long active = queueService.getActiveToken(userId);
+//        if (active < 0) {
+//            long waitingNo = queueService.getWaitingToken(userId);
+//            log.info("현재 대기번호는 " + waitingNo + "번 입니다.");
+//            return false;
+//        }
         return true;
     }
 
